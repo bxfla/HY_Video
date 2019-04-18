@@ -9,7 +9,7 @@ public class VideoSocketManager extends SocketManager {
 
     private static VideoSocketManager sockMgr = new VideoSocketManager();
 
-    private byte[] actionMsg ;
+    private byte[] actionMsg;
     ///////////////////////////////////////////////
     //序列号
     protected int seqNum = 1;
@@ -38,13 +38,14 @@ public class VideoSocketManager extends SocketManager {
     private String TAG = "VideoSocketManager";
     PacketObject packObj = new PacketObject();
     SharedPreferencesHelper spHelper;
+
     private VideoSocketManager() {
         super();
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
-        if (tag.equals("yes")){
+        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
+        if (tag.equals("yes")) {
             actionMsg = new byte[54];
-        }else {
+        } else {
             actionMsg = new byte[51];
         }
         initAction();
@@ -75,9 +76,9 @@ public class VideoSocketManager extends SocketManager {
 
     @Override
     protected void parseMsg() {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
-        if (tag.equals("yes")){
+        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
+        if (tag.equals("yes")) {
             if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x95) {
                 return;
             }
@@ -90,21 +91,22 @@ public class VideoSocketManager extends SocketManager {
             //实时视频0x01 指定时间段的视频0x02
             //实时音频0x03 指定时间段的音频0x04
             byte dataType = workBuf[32];
-        if (dataType != 1 && dataType != 2 && dataType != 6 ) {
-            return;
-        }
+            if (dataType != 1 && dataType != 2 && dataType != 6) {
+                return;
+            }
+            byte dataType1 = workBuf[41];
             //摄像头编号
-            String chtag = spHelper.getData(MyApplication.getContextObject(),"chtag","");
+            String chtag = spHelper.getData(MyApplication.getContextObject(), "chtag", "");
             byte videoChannel;
 //            if (chtag.equals("top")){
-                videoChannel = (byte) ((workBuf[39] & 0xFF) << 8 | workBuf[40] & 0xFF);
-                //摄像头编号转通道
-                for (int i = 0;i<8;i++){
-                    int let = (videoChannel>>i)&1;
-                    if (let == 1){
-                        videoChannel = (byte) i;
-                    }
+            videoChannel = (byte) ((workBuf[39] & 0xFF) << 8 | workBuf[40] & 0xFF);
+            //摄像头编号转通道
+            for (int i = 0; i < 8; i++) {
+                int let = (videoChannel >> i) & 1;
+                if (let == 1) {
+                    videoChannel = (byte) i;
                 }
+            }
 //            }else {
 //                videoChannel = workBuf[31];
 //            }
@@ -125,7 +127,7 @@ public class VideoSocketManager extends SocketManager {
             //小包序号
 //        long seqNum = ((workBuf[33] & 0xFF) << 24) | ((workBuf[34] & 0xFF) << 16) | ((workBuf[35] & 0xFF) << 8) | (workBuf[36] & 0xFF);
 
-            if (dataType != 2) {
+            if (dataType1 != 2) {
                 long seqNum = ((workBuf[37] & 0xFF) << 8) | (workBuf[38] & 0xFF);
                 long allNum = ((workBuf[35] & 0xFF) << 8) | (workBuf[36] & 0xFF);
                 packObj.seqNum = seqNum;
@@ -141,17 +143,17 @@ public class VideoSocketManager extends SocketManager {
                 } else if (num < allNum) {
                     allPackSize += packSize;
                     byte[] oldPackBuff = packObj.packBuff;
-                    packObj.packBuff = new byte[packObj.packBuff.length + workLen-56];
+                    packObj.packBuff = new byte[packObj.packBuff.length + workLen - 56];
                     System.arraycopy(oldPackBuff, 0, packObj.packBuff, 0, oldPackBuff.length);
-                    System.arraycopy(workBuf, 51, packObj.packBuff, packObj.packBuff.length - (workLen-56),workLen-56);
+                    System.arraycopy(workBuf, 51, packObj.packBuff, packObj.packBuff.length - (workLen - 56), workLen - 56);
                     num += 1;
                 } else if (num == allNum) {
-                    Log.e("seqNum",seqNum+"");
+                    Log.e("seqNum", seqNum + "");
                     allPackSize += packSize;
                     byte[] oldPackBuff = packObj.packBuff;
-                    packObj.packBuff = new byte[packObj.packBuff.length + workLen-56];
+                    packObj.packBuff = new byte[packObj.packBuff.length + workLen - 56];
                     System.arraycopy(oldPackBuff, 0, packObj.packBuff, 0, oldPackBuff.length);
-                    System.arraycopy(workBuf, 51, packObj.packBuff,packObj.packBuff.length - (workLen-56), workLen-56);
+                    System.arraycopy(workBuf, 51, packObj.packBuff, packObj.packBuff.length - (workLen - 56), workLen - 56);
                     packObj.packSize = (int) allPackSize;
                     videoList[portArray[videoChannel]].push(packObj);
                     num = 1;
@@ -163,8 +165,7 @@ public class VideoSocketManager extends SocketManager {
                     packObj = new PacketObject();
                 }
             }
-
-            if (dataType == 2) {
+            if (dataType1 == 2) {
                 long seqNum = ((workBuf[37] & 0xFF) << 8) | (workBuf[38] & 0xFF);
                 PacketObject packObj = new PacketObject();
                 packObj.seqNum = seqNum;
@@ -176,7 +177,7 @@ public class VideoSocketManager extends SocketManager {
                 System.arraycopy(workBuf, 51, packObj.packBuff, 0, packObj.packSize);
                 audioList.push(packObj);
             }
-        }else {
+        } else {
             if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x95) {
                 return;
             }
@@ -278,16 +279,17 @@ public class VideoSocketManager extends SocketManager {
         controlChannel(lineCode, busCode, channel, true, beginTime, endTime);
         total = checkCode(actionMsg);
         initTotal();
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
-        if (tag.equals("yes")){
+        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
+        if (tag.equals("yes")) {
             f = sendMsg(actionMsg);
-            if (!beginTime.equals("")){
-                sendOldMsg(actionMsg);
-                f = sendMsg(actionMsg);
+            if (!beginTime.equals("")) {
+                byte[] actionMsg1 = sendOldMsg(actionMsg);
+                String s = byte2hex(actionMsg1);
+                f = sendMsg(actionMsg1);
                 return f;
             }
-        }else {
+        } else {
             f = sendMsg(actionMsg);
             controlAudio(lineCode, busCode, (byte) chl, true, beginTime, endTime);
             total = checkCode(actionMsg);
@@ -300,13 +302,15 @@ public class VideoSocketManager extends SocketManager {
     }
 
 
-    protected void sendOldMsg(byte[] msg) {
+    protected byte[]  sendOldMsg(byte[] msg) {
         msg[28] = 11;
         //回放数据的结束时间
         msg[36] = 0;
         msg[37] = 0;
         msg[38] = 0;
         msg[39] = 0;
+
+        return msg;
     }
 
     public void closeChannel(long lineCode, long busCode, byte channel, String beginTime, String endTime, int[] chlSel) {
@@ -412,17 +416,17 @@ public class VideoSocketManager extends SocketManager {
     }
 
     private void initAction() {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
+        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
 
         //包头
         actionMsg[0] = (byte) 0xA0;
 
         //包长度
         actionMsg[1] = 0;
-        if (tag.equals("yes")){
+        if (tag.equals("yes")) {
             actionMsg[2] = 54;
-        }else {
+        } else {
             actionMsg[2] = 51;
         }
 
@@ -437,7 +441,7 @@ public class VideoSocketManager extends SocketManager {
         actionMsg[12] = 2;
 
         actionMsg[17] = 4;
-        long now = System.currentTimeMillis() ;
+        long now = System.currentTimeMillis();
         actionMsg[18] = (byte) ((now & 0xFF000000) >>> 24);
         actionMsg[19] = (byte) ((now & 0xFF0000) >>> 16);
         actionMsg[20] = (byte) ((now & 0xFF00) >>> 8);
@@ -445,9 +449,9 @@ public class VideoSocketManager extends SocketManager {
 
         actionMsg[22] = 6;
 
-        if (tag.equals("yes")){
+        if (tag.equals("yes")) {
             actionMsg[53] = (byte) 0xA1;
-        }else {
+        } else {
             actionMsg[50] = (byte) 0xA1;
         }
     }
@@ -472,19 +476,22 @@ public class VideoSocketManager extends SocketManager {
         actionMsg[16] = (byte) (busCode & 0xFF);
 
 
-        //以秒为单位 //令需减8个时区
-        long now = System.currentTimeMillis() ;
+        long now = System.currentTimeMillis();
         //unix时间
         actionMsg[23] = (byte) ((now & 0xFF000000) >>> 24);
         actionMsg[24] = (byte) ((now & 0xFF0000) >>> 16);
         actionMsg[25] = (byte) ((now & 0xFF00) >>> 8);
         actionMsg[26] = (byte) (now & 0xFF);
+//        actionMsg[23] = 0;
+//        actionMsg[24] = 0;
+//        actionMsg[25] = 0;
+//        actionMsg[26] = 0;
     }
 
     private void controlChannel(long lineCode, long busCode, byte channel, boolean openFlag, String beginTime, String endTime) {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
-        if (tag.equals("yes")){
+        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
+        if (tag.equals("yes")) {
             byte[] tempBuf = new byte[22];
 
             //操作类型
@@ -565,7 +572,7 @@ public class VideoSocketManager extends SocketManager {
             tempBuf[20] = (channel);
             tempBuf[21] = (byte) (0x01);
             System.arraycopy(tempBuf, 0, actionMsg, 27, 22);
-        }else {
+        } else {
             byte[] tempBuf = new byte[19];
             tempBuf[0] = 0x01;
             tempBuf[1] = 0x01;
@@ -621,14 +628,14 @@ public class VideoSocketManager extends SocketManager {
     }
 
     private void initTotal() {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
-        if (tag.equals("yes")){
+        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
+        if (tag.equals("yes")) {
             actionMsg[49] = (byte) ((total & 0xFF000000) >>> 24);
             actionMsg[50] = (byte) ((total & 0xFF0000) >>> 16);
             actionMsg[51] = (byte) ((total & 0xFF00) >>> 8);
             actionMsg[52] = (byte) ((total & 0xFF));
-        }else {
+        } else {
             actionMsg[46] = (byte) ((total & 0xFF000000) >>> 24);
             actionMsg[47] = (byte) ((total & 0xFF0000) >>> 16);
             actionMsg[48] = (byte) ((total & 0xFF00) >>> 8);
