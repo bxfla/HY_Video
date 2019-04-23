@@ -98,7 +98,6 @@ public class VideoSocketManager extends SocketManager {
             //摄像头编号
             String chtag = spHelper.getData(MyApplication.getContextObject(), "chtag", "");
             byte videoChannel;
-//            if (chtag.equals("top")){
             videoChannel = (byte) ((workBuf[39] & 0xFF) << 8 | workBuf[40] & 0xFF);
             //摄像头编号转通道
             for (int i = 0; i < 8; i++) {
@@ -107,9 +106,6 @@ public class VideoSocketManager extends SocketManager {
                     videoChannel = (byte) i;
                 }
             }
-//            }else {
-//                videoChannel = workBuf[31];
-//            }
 
             if (videoChannel < 0 || videoChannel > 7) {
                 return;
@@ -138,7 +134,7 @@ public class VideoSocketManager extends SocketManager {
                 if (packObj.packBuff == null) {
                     allPackSize += packSize;
                     packObj.packBuff = new byte[(int) packSize];
-                    System.arraycopy(workBuf, 0, packObj.packBuff, 0, workLen);
+                    System.arraycopy(workBuf, 51, packObj.packBuff, 56, workLen);
                     num += 1;
                 } else if (num < allNum) {
                     allPackSize += packSize;
@@ -277,39 +273,54 @@ public class VideoSocketManager extends SocketManager {
         fillAction(lineCode, busCode);
         //开始结束时间
         controlChannel(lineCode, busCode, channel, true, beginTime, endTime);
-        total = checkCode(actionMsg);
-        initTotal();
+        checkCode(actionMsg);
+//        initTotal();
         spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
         String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
         if (tag.equals("yes")) {
             f = sendMsg(actionMsg);
+            String s = byte2hex(actionMsg);
             if (!beginTime.equals("")) {
                 byte[] actionMsg1 = sendOldMsg(actionMsg);
-                String s = byte2hex(actionMsg1);
+                checkCode(actionMsg1);
+//                total = checkCode(actionMsg1);
+//                initTotal();
+                String s1 = byte2hex(actionMsg1);
                 f = sendMsg(actionMsg1);
-                return f;
             }
         } else {
             f = sendMsg(actionMsg);
             controlAudio(lineCode, busCode, (byte) chl, true, beginTime, endTime);
             total = checkCode(actionMsg);
             initTotal();
-            String s1 = byte2hex(actionMsg);
-            System.out.println("????????~~~~~~" + s1);
+    //            String s1 = byte2hex(actionMsg);
+    //            System.out.println("????????~~~~~~" + s1);
             f = sendMsg(actionMsg);
         }
         return f;
     }
 
+    protected long checkCode(byte[] dataBuf) {
+        long check = 0;
+        for (int i = 0; i < dataBuf.length - 5; i++) {
+            check += (short) (dataBuf[i] & 0xFF);
+        }
+        dataBuf[dataBuf.length - 5] = (byte) ((check & 0xFF000000) >>> 24);
+        dataBuf[dataBuf.length - 4] = (byte) ((check & 0xFF0000) >>> 16);
+        dataBuf[dataBuf.length - 3] = (byte) ((check & 0xFF00) >>> 8);
+        dataBuf[dataBuf.length - 2] = (byte) (check & 0xFF);
+        return check;
+    }
+
 
     protected byte[]  sendOldMsg(byte[] msg) {
+        msg[5] = (byte) seqNum;
         msg[28] = 11;
         //回放数据的结束时间
         msg[36] = 0;
         msg[37] = 0;
         msg[38] = 0;
         msg[39] = 0;
-
         return msg;
     }
 
@@ -442,11 +453,10 @@ public class VideoSocketManager extends SocketManager {
 
         actionMsg[17] = 4;
         long now = System.currentTimeMillis();
-        actionMsg[18] = (byte) ((now & 0xFF000000) >>> 24);
-        actionMsg[19] = (byte) ((now & 0xFF0000) >>> 16);
-        actionMsg[20] = (byte) ((now & 0xFF00) >>> 8);
-        actionMsg[21] = (byte) (now & 0xFF);
-
+        actionMsg[18] = (byte)((now & 0xFF000000) >>> 24);
+        actionMsg[19] = (byte)((now & 0xFF0000) >>> 16);
+        actionMsg[20] = (byte)((now & 0xFF00) >>> 8);
+        actionMsg[21] = (byte)(now & 0xFF);
         actionMsg[22] = 6;
 
         if (tag.equals("yes")) {
@@ -458,8 +468,8 @@ public class VideoSocketManager extends SocketManager {
 
     private void fillAction(long lineCode, long busCode) {
         //包序号
-        actionMsg[4] = (byte) ((seqNum & 0xFF00) >>> 8);
-        actionMsg[5] = (byte) (seqNum & 0xFF00);
+        actionMsg[4] = 0;
+        actionMsg[5] = (byte) (seqNum);
 
         seqNum++;
 
@@ -482,10 +492,6 @@ public class VideoSocketManager extends SocketManager {
         actionMsg[24] = (byte) ((now & 0xFF0000) >>> 16);
         actionMsg[25] = (byte) ((now & 0xFF00) >>> 8);
         actionMsg[26] = (byte) (now & 0xFF);
-//        actionMsg[23] = 0;
-//        actionMsg[24] = 0;
-//        actionMsg[25] = 0;
-//        actionMsg[26] = 0;
     }
 
     private void controlChannel(long lineCode, long busCode, byte channel, boolean openFlag, String beginTime, String endTime) {
@@ -531,12 +537,14 @@ public class VideoSocketManager extends SocketManager {
                 long begin = 0;
                 long end = 0;
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
                 try {
                     //历史回放
                     begin = sdf.parse(beginTime).getTime() / 1000 + 3600 * 8;
                     end = sdf.parse(endTime).getTime() / 1000 + 3600 * 8;
+//                    begin = sdf.parse(beginTime).getTime() / 1000;
+//                    end = sdf.parse(endTime).getTime() / 1000;
                     tempBuf[4] = 2;
                 } catch (Exception ex) {
                     //调整为实时数据
@@ -660,4 +668,3 @@ public class VideoSocketManager extends SocketManager {
     }
 
 }
-

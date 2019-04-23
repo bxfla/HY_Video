@@ -192,88 +192,88 @@ public abstract class SocketManager {
     }
 
     protected void splitMsg() {
-        if((workBuf[6] & 0xFF) == 0x95){
-            try {
-                while (dataLen > 9) {
-                    //数据包头验证
-                    if ((dataBuf[0] & 0xFF) != 0x80 && (dataBuf[0] & 0xFF) != 0xA0) {
-                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
-                        dataLen -= 1;
-                        continue;
-                    }
-                    //验证数据长度，不得小于最小值9
-                    int packSize = ((dataBuf[1] & 0xFF) << 8) | (dataBuf[2] & 0xFF);
-                    if (packSize < 9) {
-                        Log.e("SocketManage1", "splitMsg:22222222222222");
-                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
-                        dataLen -= 1;
-                        continue;
-                    }
-
-                    //验证数据长度，不得大于最大值2048
-                    if (packSize > 2048) {
-                        Log.e("SocketManage2", "splitMsg:33333333333333");
-                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
-                        dataLen -= 1;
-
-                        continue;
-                    }
-
-                    //包数据未接收完毕
-                    if (packSize > dataLen) {
-                        break;
-                    }
-
-                    //包头包尾校验
-                    if (dataBuf[0] + 1 != dataBuf[packSize - 1]) {
-                        Log.e("SocketManage3", "splitMsg:44444444444");
-                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
-                        dataLen -= 1;
-
-                        continue;
-                    }
-
-
-                    //协议版本号处理
-                    //版本号为1-10之间
-                    if (dataBuf[3] <= 0 || dataBuf[3] > 10) {
-                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
-                        dataLen -= 1;
-
-                        continue;
-                    }
-
-                    //校验和的判断
-                    //排除版本号为1和3的
-                    if (dataBuf[3] != 1 && dataBuf[3] != 3) {
-                        long check1 = 0;
-                        for (int j = 0; j <= packSize - 6; j++) {
-                            check1 += (short) (dataBuf[j] & 0xFF);
-                        }
-
-                        long check2 = ((dataBuf[packSize - 5] & 0xFF) << 24) | ((dataBuf[packSize - 4] & 0xFF) << 16) | ((dataBuf[packSize - 3] & 0xFF) << 8) | (dataBuf[packSize - 2] & 0xFF);
-                        if (check1 != check2) {
-                            System.arraycopy(dataBuf, packSize, dataBuf, 0, dataLen - packSize);
-
-                            dataLen -= packSize;
-                            continue;
-                        }
-                    }
-
-                    System.arraycopy(dataBuf, 0, workBuf, 0, packSize);
-                    workLen = packSize;
-                    if (packSize > dataLen) {
-                        break;
-                    }
-                    parseMsg();
-                    System.arraycopy(dataBuf, packSize, dataBuf, 0, dataLen - packSize);
-                    dataLen -= packSize;
-                }
-            } catch (Exception e) {
-                Log.e("SocketManage:splitMsg", e.toString());
-                //111.225.238.203
-            }
-        }else {
+//        if((workBuf[6] & 0xFF) == 0x95){
+//            try {
+//                while (dataLen > 9) {
+//                    //数据包头验证
+//                    if ((dataBuf[0] & 0xFF) != 0x80 && (dataBuf[0] & 0xFF) != 0xA0) {
+//                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
+//                        dataLen -= 1;
+//                        continue;
+//                    }
+//                    //验证数据长度，不得小于最小值9
+//                    int packSize = ((dataBuf[1] & 0xFF) << 8) | (dataBuf[2] & 0xFF);
+//                    if (packSize < 9) {
+//                        Log.e("SocketManage1", "splitMsg:22222222222222");
+//                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
+//                        dataLen -= 1;
+//                        continue;
+//                    }
+//
+//                    //验证数据长度，不得大于最大值2048
+//                    if (packSize > 2048) {
+//                        Log.e("SocketManage2", "splitMsg:33333333333333");
+//                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
+//                        dataLen -= 1;
+//
+//                        continue;
+//                    }
+//
+//                    //包数据未接收完毕
+//                    if (packSize > dataLen) {
+//                        break;
+//                    }
+//
+//                    //包头包尾校验
+//                    if (dataBuf[0] + 1 != dataBuf[packSize - 1]) {
+//                        Log.e("SocketManage3", "splitMsg:44444444444");
+//                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
+//                        dataLen -= 1;
+//
+//                        continue;
+//                    }
+//
+//
+//                    //协议版本号处理
+//                    //版本号为1-10之间
+//                    if (dataBuf[3] <= 0 || dataBuf[3] > 10) {
+//                        System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
+//                        dataLen -= 1;
+//
+//                        continue;
+//                    }
+//
+//                    //校验和的判断
+//                    //排除版本号为1和3的
+//                    if (dataBuf[3] != 1 && dataBuf[3] != 3) {
+//                        long check1 = 0;
+//                        for (int j = 0; j <= packSize - 6; j++) {
+//                            check1 += (short) (dataBuf[j] & 0xFF);
+//                        }
+//
+//                        long check2 = ((dataBuf[packSize - 5] & 0xFF) << 24) | ((dataBuf[packSize - 4] & 0xFF) << 16) | ((dataBuf[packSize - 3] & 0xFF) << 8) | (dataBuf[packSize - 2] & 0xFF);
+//                        if (check1 != check2) {
+//                            System.arraycopy(dataBuf, packSize, dataBuf, 0, dataLen - packSize);
+//
+//                            dataLen -= packSize;
+//                            continue;
+//                        }
+//                    }
+//
+//                    System.arraycopy(dataBuf, 0, workBuf, 0, packSize);
+//                    workLen = packSize;
+//                    if (packSize > dataLen) {
+//                        break;
+//                    }
+//                    parseMsg();
+//                    System.arraycopy(dataBuf, packSize, dataBuf, 0, dataLen - packSize);
+//                    dataLen -= packSize;
+//                }
+//            } catch (Exception e) {
+//                Log.e("SocketManage:splitMsg", e.toString());
+//                //111.225.238.203
+//            }
+//        }else {
             try {
                 while (dataLen > 9) {
                     //数据包头验证
@@ -356,7 +356,7 @@ public abstract class SocketManager {
                 Log.e("SocketManage:splitMsg", "11111111111111111111");
                 //111.225.238.203
             }
-        }
+//        }
 
     }
 
