@@ -1,5 +1,35 @@
 package com.sdhy.video.client;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Toast;
+
+import com.component.DatePickActivity;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,38 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-
 import java.util.Set;
-
-import com.component.DatePickActivity;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-
-import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.ViewTreeObserver.OnWindowFocusChangeListener;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 
 @SuppressLint("NewApi")
@@ -95,6 +94,9 @@ public class BusSelectActivity extends Activity implements OnClickListener {
     private RadioButton btn_women;
     private LinearLayout kaishi, jieshu;
     SharedPreferencesHelper spHelper;
+    private static boolean isExit = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +110,10 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 //	    System.out.println("busList="+busList);
 //	    System.out.println("busIp="+busIp);
         setContentView(R.layout.select);
+
+        if (videoSockMgr.isStarted()) {
+            videoSockMgr.stop();
+        }
 
         btn_man = (RadioButton) findViewById(R.id.btn_re0);
         btn_women = (RadioButton) findViewById(R.id.btn_re1);
@@ -155,6 +161,12 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 
         btnNextStep = (Button) findViewById(R.id.btnNextStep);
         btnBackReturn = (ImageView) findViewById(R.id.btnBackReturn);
+
+
+
+
+
+
 
         time = System.currentTimeMillis();
         time2 = time;
@@ -297,6 +309,9 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         btnBackReturn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (videoSockMgr.isStarted()) {
+                    videoSockMgr.stop();
+                }
                 finish();
             }
         });
@@ -583,6 +598,14 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         }
     };
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (videoSockMgr.isStarted()) {
+            videoSockMgr.stop();
+        }
+    }
+
     private void initLineAdapter() {
         if (clientSockMgr.getLineMap().isEmpty()) {
             return;
@@ -777,7 +800,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                 Date dt1 = df.parse(datefirst);
                 Date dt2 = df.parse(datelast);
                 if (dt1.getTime() > dt2.getTime()) {
-                    Toast.makeText(BusSelectActivity.this, "结束时间必须大于开始时间", 3).show();
+                    Toast.makeText(this, "结束时间必须大于开始时间", Toast.LENGTH_SHORT).show();
                 } else if (dt1.getTime() < dt2.getTime()) {
                     if (!repairlast_time_etlast.getText().toString().equals(datelast)) {
                         repairlast_time_etlast.setText(data.getStringExtra("date"));
@@ -809,5 +832,43 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                 break;
         }
     }
+
+    //推出程序
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> mList = mActivityManager.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : mList) {
+                if (runningAppProcessInfo.pid != android.os.Process.myPid()) {
+                    android.os.Process.killProcess(runningAppProcessInfo.pid);
+                }
+            }
+            android.os.Process.killProcess(android.os.Process.myPid());
+            finish();
+            System.exit(0);
+        }
+    }
+
+    //推出程序
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
 
 }

@@ -57,9 +57,6 @@ public class ServerConfigActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.config);
-        SharedPreferencesHelper spHelper = new SharedPreferencesHelper(ServerConfigActivity.this, "login");
-        spHelper.saveData(ServerConfigActivity.this, "check", "");
-        spHelper.saveData(ServerConfigActivity.this, "check", "");
         format_list = new ArrayList<String>();
         format_list.add("CIF");
         format_list.add("D1");
@@ -82,6 +79,13 @@ public class ServerConfigActivity extends Activity {
         sprinnerFormat = (Spinner) findViewById(R.id.spinnerFormat);
 
         deviceCheckBox = (CheckBox) findViewById(R.id.config_checkBox1);
+        SharedPreferencesHelper spHelper = new SharedPreferencesHelper(ServerConfigActivity.this, "login");
+        String type = spHelper.getData(ServerConfigActivity.this, "check", "");
+        if (type.equals("yes")){
+            deviceCheckBox.setChecked(true);
+        }else if (type.equals("no")){
+            deviceCheckBox.setChecked(false);
+        }
         homepage_titleshe = (RelativeLayout) findViewById(R.id.homepage_titleshe);
         homepage_titleshe.setOnClickListener(new OnClickListener() {
 

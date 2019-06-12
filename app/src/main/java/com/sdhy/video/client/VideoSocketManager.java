@@ -265,7 +265,6 @@ public class VideoSocketManager extends SocketManager {
                 }
                 portArray[i] = n;
                 n++;
-
             }
         }
         busNum = busCode;
@@ -385,12 +384,12 @@ public class VideoSocketManager extends SocketManager {
             long begin = 0;
             long end = 0;
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
             try {
                 //历史回放
-                begin = sdf.parse(beginTime).getTime() / 1000 - 3600 * 8;
-                end = sdf.parse(endTime).getTime() / 1000 - 3600 * 8;
+                begin = sdf.parse(beginTime).getTime() / 1000 + 3600 * 8;
+                end = sdf.parse(endTime).getTime() / 1000 + 3600 * 8;
                 tempBuf[4] = 2;
             } catch (Exception ex) {
                 //调整为实时数据

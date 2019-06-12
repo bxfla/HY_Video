@@ -15,6 +15,7 @@
         <ImageView
             android:id="@+id/btnBackReturn"
             android:layout_width="60dp"
+			android:visibility="gone"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
