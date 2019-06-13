@@ -85,6 +85,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
     private CheckBox checkChannel6;
     private CheckBox checkChannel7;
     private CheckBox checkChannel8;
+    private CheckBox cbType;
     private EditText repairTimeEt, repairlast_time_etlast;
     private ArrayAdapter<String> adapterLine = null;
     private ArrayAdapter<String> adapterBus = null;
@@ -94,6 +95,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
     private RadioButton btn_women;
     private LinearLayout kaishi, jieshu;
     SharedPreferencesHelper spHelper;
+    SharedPreferencesHelper spHelper1;
     private static boolean isExit = false;
 
 
@@ -101,6 +103,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         spHelper = new SharedPreferencesHelper(this,"tag");
+        spHelper1 = new SharedPreferencesHelper(BusSelectActivity.this, "login");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         Bundle bundle = getIntent().getExtras();
@@ -110,6 +113,13 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 //	    System.out.println("busList="+busList);
 //	    System.out.println("busIp="+busIp);
         setContentView(R.layout.select);
+        cbType = (CheckBox) findViewById(R.id.cbType);
+        String type = spHelper1.getData(BusSelectActivity.this, "check", "");
+        if (type.equals("yes")){
+            cbType.setChecked(true);
+        }else if (type.equals("no")){
+            cbType.setChecked(false);
+        }
 
         if (videoSockMgr.isStarted()) {
             videoSockMgr.stop();
@@ -161,11 +171,6 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 
         btnNextStep = (Button) findViewById(R.id.btnNextStep);
         btnBackReturn = (ImageView) findViewById(R.id.btnBackReturn);
-
-
-
-
-
 
 
         time = System.currentTimeMillis();
@@ -319,7 +324,12 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         btnNextStep.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                boolean deviceFlg = cbType.isChecked();
+                if (deviceFlg == false) {
+                    spHelper1.saveData(BusSelectActivity.this, "check", "no");
+                } else {
+                    spHelper1.saveData(BusSelectActivity.this, "check", "yes");
+                }
                 if (huifang.equals("1")) {
                     //直播
                     String line = actvLineCode.getText().toString();

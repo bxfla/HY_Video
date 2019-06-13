@@ -116,7 +116,7 @@ public final class R {
         public static final int btnBackReturnvi=0x7f0a0006;
         public static final int btnConfigCancel=0x7f0a0013;
         public static final int btnConfigSave=0x7f0a0012;
-        public static final int btnNextStep=0x7f0a0031;
+        public static final int btnNextStep=0x7f0a0032;
         public static final int btnServerConfig=0x7f0a0018;
         public static final int btnUserLogin=0x7f0a0019;
         public static final int btn_re0=0x7f0a001f;
@@ -132,6 +132,7 @@ public final class R {
         public static final int cbEightChannel=0x7f0a0027;
         public static final int cbFourChannel=0x7f0a0026;
         public static final int cbSelectChannel=0x7f0a0028;
+        public static final int cbType=0x7f0a0031;
         public static final int config_checkBox1=0x7f0a0011;
         public static final int contentTextView=0x7f0a0014;
         public static final int date_picker=0x7f0a0003;

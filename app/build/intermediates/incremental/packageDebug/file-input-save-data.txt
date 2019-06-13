@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Tue Jun 11 17:04:09 CST 2019
+#Wed Jun 12 15:43:39 CST 2019
 25.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\login.xml
 25.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 22.set=ANDROID_RESOURCE

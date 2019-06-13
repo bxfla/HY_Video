@@ -346,9 +346,11 @@
 package com.sdhy.video.client;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -356,6 +358,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -458,6 +461,16 @@ public class MainViewActivity extends Activity {
             }
             //此处写退向后台的处理
             videoSockMgr.stop();
+
+            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> mList = mActivityManager.getRunningAppProcesses();
+            for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : mList) {
+                if (runningAppProcessInfo.pid != android.os.Process.myPid()) {
+                    android.os.Process.killProcess(runningAppProcessInfo.pid);
+                }
+            }
+            android.os.Process.killProcess(android.os.Process.myPid());
+
             Intent intent = new Intent(this,BusSelectActivity.class);
             Bundle bl = new Bundle();
             //	bl.putStringArrayList("chlSel", aa);

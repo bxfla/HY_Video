@@ -125,6 +125,12 @@ public class UserLoginActivity extends Activity {
                     Toast.LENGTH_LONG).show();
         }
 
+        if (userCode.equals("")&&password.equals("")){
+
+        }else {
+            setLogin();
+        }
+
 //		Thread thread = new Thread() {
 //			@Override
 //			public void run() {
@@ -244,6 +250,7 @@ public class UserLoginActivity extends Activity {
 
         });
 
+
         btnServerConfig.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,6 +261,107 @@ public class UserLoginActivity extends Activity {
         });
 
         // Log.i(this.getClass().getName(), "onCreate");
+    }
+
+    private void setLogin() {
+                userName = edtUserName.getText().toString().trim();
+                userPwd = edtUserPwd.getText().toString().trim();
+
+                if (ConstParm.webAddr == "" || ConstParm.conAddr == ""
+                        || ConstParm.videoAddr == "") {
+                    new AlertDialog.Builder(UserLoginActivity.this)
+                            .setTitle("提示").setMessage("服务器地址不能为空")
+                            .setPositiveButton("确定", null).show();
+                    return;
+                }
+                if (CheckWebServerAddr(ConstParm.webAddr) == false) {
+                    Toast.makeText(UserLoginActivity.this, "web服务器IP无效！",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                //检查网络通不通
+                if (!getNetWorkState()) {//wifi,3G。
+                    Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                if (isLogining) {
+                    Toast.makeText(UserLoginActivity.this, "登陆中,请稍后再试",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        Message login_ms = new Message();
+                        login_ms.what = 5;
+                        handler.sendMessage(login_ms);
+
+                        isLogining = true;
+                        String str = "/sdhyschedule/PhoneQueryAction";
+                        URL = "http://" + ConstParm.webAddr + ":" + ConstParm.webPort + str;
+
+                        String retMess = getPhoneUser(userName, userPwd, URL
+                                + "!getVideoLoginUser.shtml", isFirstRun);
+
+                        if (retMess.equals("0")) {
+                            loginMsg = "0";
+                        } else {
+                            loginMsg = retMess;//.substring(0, retMess.indexOf(","));
+                            //userType = retMess.substring(retMess.indexOf(",") + 1);
+                        }
+
+                        //Log.d("登陆验证返回", loginMsg);
+                        Message ms = new Message();
+                        if (loginMsg.equals("1") || loginMsg.equals("2")) {
+                            ms.what = 0;
+                            SharedPreferences shareObj = getSharedPreferences("config", MODE_PRIVATE);
+                            SharedPreferences.Editor preM = shareObj.edit();
+
+                            if (mPswCheck.isChecked()) {
+                                preM.putString("userCode", userName);
+
+                                preM.putString("password", userPwd);
+                                preM.putBoolean("pswChecked", true);
+                                preM.commit();
+                            } else {
+                                preM.putString("userCode", "");
+                                preM.putString("password", "");
+                                preM.putBoolean("pswChecked", false);
+                                preM.commit();
+                            }
+//							Intent intent = new Intent(UserLoginActivity.this,
+//									BusSelectActivity.class);
+//							startActivity(intent);
+                        } else if (loginMsg.equals("3") || loginMsg.equals("4")) {
+                            ms.what = 1;
+//							new AlertDialog.Builder(UserLoginActivity.this)
+//									.setTitle("提示").setMessage("用户名或密码错误")
+//									.setPositiveButton("确定", null).show();
+                        } else {
+                            ms.what = 2;
+                        }
+
+                        handler.sendMessage(ms);
+                        isLogining = false;
+                    }
+
+                };
+                thread.start();
+//					else {
+//						String s = "";
+//						s = "其他错误，错误代码" + loginMsg + "!";
+//						Toast.makeText(UserLoginActivity.this, s,
+//								Toast.LENGTH_LONG).show();
+//
+//					}
+
+//				} catch (Exception ex) {
+//					new AlertDialog.Builder(UserLoginActivity.this)
+//							.setTitle("提示").setMessage("URL链接失败！")
+//							.setPositiveButton("确定", null).show();
+//				}
     }
 
     //检查网络通不通
