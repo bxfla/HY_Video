@@ -540,8 +540,8 @@ public class VideoSocketManager extends SocketManager {
 
                 try {
                     //历史回放
-                    begin = sdf.parse(beginTime).getTime() / 1000 + 3600 * 8;
-                    end = sdf.parse(endTime).getTime() / 1000 + 3600 * 8;
+                    begin = sdf.parse(beginTime+":00").getTime() / 1000 + 3600 * 8;
+                    end = sdf.parse(endTime+":00").getTime() / 1000 + 3600 * 8;
 //                    begin = sdf.parse(beginTime).getTime() / 1000;
 //                    end = sdf.parse(endTime).getTime() / 1000;
                     tempBuf[4] = 2;
@@ -602,12 +602,12 @@ public class VideoSocketManager extends SocketManager {
                 long begin = 0;
                 long end = 0;
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
                 try {
                     //??????
-                    begin = sdf.parse(beginTime).getTime() / 1000 + 3600 * 8;
-                    end = sdf.parse(endTime).getTime() / 1000 + 3600 * 8;
+                    begin = sdf.parse(beginTime+":00").getTime() / 1000 + 3600 * 8;
+                    end = sdf.parse(endTime+":00").getTime() / 1000 + 3600 * 8;
                     tempBuf[4] = 2;
                 } catch (Exception ex) {
                     //???????????

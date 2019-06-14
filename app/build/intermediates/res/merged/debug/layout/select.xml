@@ -378,11 +378,24 @@
 
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/cbType"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:text="新设备"/>
+            android:orientation="horizontal">
+            <CheckBox
+                android:id="@+id/cbType"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="45dp"
+                android:text="新设备"/>
+            <Button
+                android:id="@+id/btnServer"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:layout_height="45dp"
+                android:text="配置"/>
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnNextStep"

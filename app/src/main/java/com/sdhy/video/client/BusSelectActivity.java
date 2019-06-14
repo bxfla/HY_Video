@@ -86,6 +86,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
     private CheckBox checkChannel7;
     private CheckBox checkChannel8;
     private CheckBox cbType;
+    private Button btnServer;
     private EditText repairTimeEt, repairlast_time_etlast;
     private ArrayAdapter<String> adapterLine = null;
     private ArrayAdapter<String> adapterBus = null;
@@ -114,6 +115,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 //	    System.out.println("busIp="+busIp);
         setContentView(R.layout.select);
         cbType = (CheckBox) findViewById(R.id.cbType);
+        btnServer = (Button) findViewById(R.id.btnServer);
         String type = spHelper1.getData(BusSelectActivity.this, "check", "");
         if (type.equals("yes")){
             cbType.setChecked(true);
@@ -317,6 +319,15 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                 if (videoSockMgr.isStarted()) {
                     videoSockMgr.stop();
                 }
+                finish();
+            }
+        });
+
+        btnServer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BusSelectActivity.this,ServerConfigActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

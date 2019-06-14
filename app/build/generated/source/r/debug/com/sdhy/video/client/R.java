@@ -116,7 +116,8 @@ public final class R {
         public static final int btnBackReturnvi=0x7f0a0006;
         public static final int btnConfigCancel=0x7f0a0013;
         public static final int btnConfigSave=0x7f0a0012;
-        public static final int btnNextStep=0x7f0a0032;
+        public static final int btnNextStep=0x7f0a0033;
+        public static final int btnServer=0x7f0a0032;
         public static final int btnServerConfig=0x7f0a0018;
         public static final int btnUserLogin=0x7f0a0019;
         public static final int btn_re0=0x7f0a001f;
