@@ -274,6 +274,8 @@ public abstract class SocketManager {
 //                //111.225.238.203
 //            }
 //        }else {
+//        String s = byte2hex(dataBuf);
+//        Log.e("ZZZ",s);
             try {
                 while (dataLen > 9) {
                     //数据包头验证

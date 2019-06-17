@@ -76,6 +76,8 @@ public class VideoSocketManager extends SocketManager {
 
     @Override
     protected void parseMsg() {
+        String s = byte2hex(workBuf);
+        Log.e("ZZZ", s);
         spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
         String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
         if (tag.equals("yes")) {
@@ -276,25 +278,35 @@ public class VideoSocketManager extends SocketManager {
 //        initTotal();
         spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
         String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
-        if (tag.equals("yes")) {
-            f = sendMsg(actionMsg);
-            String s = byte2hex(actionMsg);
-            if (!beginTime.equals("")) {
+        if (!beginTime.equals("")) {
+            if (tag.equals("yes")) {
+                sendMsg(actionMsg);
+                String s = byte2hex(actionMsg);
+                Log.e("XXX",s);
                 byte[] actionMsg1 = sendOldMsg(actionMsg);
                 checkCode(actionMsg1);
-//                total = checkCode(actionMsg1);
-//                initTotal();
                 String s1 = byte2hex(actionMsg1);
-                f = sendMsg(actionMsg1);
+                Log.e("YYY",s1);
+                sendMsg(actionMsg1);
+            } else {
+                sendMsg(actionMsg);
+                controlAudio(lineCode, busCode, (byte) chl, true, beginTime, endTime);
+                total = checkCode(actionMsg);
+                initTotal();
+                String s = byte2hex(actionMsg);
+                Log.e("ZZZ",s);
+                sendMsg(actionMsg);
             }
         } else {
-            f = sendMsg(actionMsg);
-            controlAudio(lineCode, busCode, (byte) chl, true, beginTime, endTime);
-            total = checkCode(actionMsg);
-            initTotal();
-    //            String s1 = byte2hex(actionMsg);
-    //            System.out.println("????????~~~~~~" + s1);
-            f = sendMsg(actionMsg);
+            if (tag.equals("yes")) {
+                sendMsg(actionMsg);
+            } else {
+                sendMsg(actionMsg);
+                controlAudio(lineCode, busCode, (byte) chl, true, beginTime, endTime);
+                total = checkCode(actionMsg);
+                initTotal();
+                sendMsg(actionMsg);
+            }
         }
         return f;
     }
@@ -312,9 +324,9 @@ public class VideoSocketManager extends SocketManager {
     }
 
 
-    protected byte[]  sendOldMsg(byte[] msg) {
-        msg[5] = (byte) seqNum;
-        msg[28] = 11;
+    protected byte[] sendOldMsg(byte[] msg) {
+        msg[28] = 0x11;
+        actionMsg[5] = (byte) (seqNum);
         //回放数据的结束时间
         msg[36] = 0;
         msg[37] = 0;
@@ -452,10 +464,10 @@ public class VideoSocketManager extends SocketManager {
 
         actionMsg[17] = 4;
         long now = System.currentTimeMillis();
-        actionMsg[18] = (byte)((now & 0xFF000000) >>> 24);
-        actionMsg[19] = (byte)((now & 0xFF0000) >>> 16);
-        actionMsg[20] = (byte)((now & 0xFF00) >>> 8);
-        actionMsg[21] = (byte)(now & 0xFF);
+        actionMsg[18] = (byte) ((now & 0xFF000000) >>> 24);
+        actionMsg[19] = (byte) ((now & 0xFF0000) >>> 16);
+        actionMsg[20] = (byte) ((now & 0xFF00) >>> 8);
+        actionMsg[21] = (byte) (now & 0xFF);
         actionMsg[22] = 6;
 
         if (tag.equals("yes")) {
@@ -483,14 +495,28 @@ public class VideoSocketManager extends SocketManager {
         actionMsg[14] = (byte) ((busCode & 0xFF0000) >>> 16);
         actionMsg[15] = (byte) ((busCode & 0xFF00) >>> 8);
         actionMsg[16] = (byte) (busCode & 0xFF);
-
-
-        long now = System.currentTimeMillis();
-        //unix时间
-        actionMsg[23] = (byte) ((now & 0xFF000000) >>> 24);
-        actionMsg[24] = (byte) ((now & 0xFF0000) >>> 16);
-        actionMsg[25] = (byte) ((now & 0xFF00) >>> 8);
-        actionMsg[26] = (byte) (now & 0xFF);
+//        long now = System.currentTimeMillis();
+//        //unix时间
+//        actionMsg[23] = (byte) ((now & 0xFF000000) >>> 24);
+//        actionMsg[24] = (byte) ((now & 0xFF0000) >>> 16);
+//        actionMsg[25] = (byte) ((now & 0xFF00) >>> 8);
+//        actionMsg[26] = (byte) (now & 0xFF);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+//        //获取当前时间
+//        Date date = new Date(System.currentTimeMillis());
+//        String time = sdf.format(date);
+//        long begin = 0;
+//        try {
+//            begin = sdf.parse(time).getTime();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        long begin = System.currentTimeMillis();
+        //回放数据的开始时间
+        actionMsg[23] = (byte) ((begin & 0xFF000000) >>> 24);
+        actionMsg[24] = (byte) ((begin & 0xFF0000) >>> 16);
+        actionMsg[25] = (byte) ((begin & 0xFF00) >>> 8);
+        actionMsg[26] = (byte) (begin & 0xFF);
     }
 
     private void controlChannel(long lineCode, long busCode, byte channel, boolean openFlag, String beginTime, String endTime) {
@@ -540,8 +566,8 @@ public class VideoSocketManager extends SocketManager {
 
                 try {
                     //历史回放
-                    begin = sdf.parse(beginTime+":00").getTime() / 1000 + 3600 * 8;
-                    end = sdf.parse(endTime+":00").getTime() / 1000 + 3600 * 8;
+                    begin = sdf.parse(beginTime + ":00").getTime() / 1000 + 3600 * 8;
+                    end = sdf.parse(endTime + ":00").getTime() / 1000 + 3600 * 8;
 //                    begin = sdf.parse(beginTime).getTime() / 1000;
 //                    end = sdf.parse(endTime).getTime() / 1000;
                     tempBuf[4] = 2;
@@ -606,8 +632,8 @@ public class VideoSocketManager extends SocketManager {
 
                 try {
                     //??????
-                    begin = sdf.parse(beginTime+":00").getTime() / 1000 + 3600 * 8;
-                    end = sdf.parse(endTime+":00").getTime() / 1000 + 3600 * 8;
+                    begin = sdf.parse(beginTime + ":00").getTime() / 1000 + 3600 * 8;
+                    end = sdf.parse(endTime + ":00").getTime() / 1000 + 3600 * 8;
                     tempBuf[4] = 2;
                 } catch (Exception ex) {
                     //???????????
