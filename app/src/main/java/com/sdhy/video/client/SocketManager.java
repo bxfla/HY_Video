@@ -298,7 +298,6 @@ public abstract class SocketManager {
                         Log.e("SocketManage2", "splitMsg:33333333333333");
                         System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
                         dataLen -= 1;
-
                         continue;
                     }
 
@@ -312,7 +311,6 @@ public abstract class SocketManager {
                         Log.e("SocketManage3", "splitMsg:44444444444");
                         System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
                         dataLen -= 1;
-
                         continue;
                     }
 
@@ -323,7 +321,6 @@ public abstract class SocketManager {
                         Log.e("SocketManage4", "splitMsg:55555555555");
                         System.arraycopy(dataBuf, 1, dataBuf, 0, dataLen - 1);
                         dataLen -= 1;
-
                         continue;
                     }
 
@@ -339,7 +336,6 @@ public abstract class SocketManager {
                         if (check1 != check2) {
                             Log.e("SocketManage5", "splitMsg:666666666666");
                             System.arraycopy(dataBuf, packSize, dataBuf, 0, dataLen - packSize);
-
                             dataLen -= packSize;
                             continue;
                         }
@@ -356,10 +352,7 @@ public abstract class SocketManager {
                 }
             } catch (Exception e) {
                 Log.e("SocketManage:splitMsg", "11111111111111111111");
-                //111.225.238.203
             }
-//        }
-
     }
 
 

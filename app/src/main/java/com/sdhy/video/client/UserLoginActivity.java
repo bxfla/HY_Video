@@ -121,16 +121,13 @@ public class UserLoginActivity extends Activity {
 
         //检查网络通不通
         if (!getNetWorkState()) {//wifi,3G。
-            Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启", Toast.LENGTH_LONG).show();
         }
 
         if (userCode.equals("")&&password.equals("")){
-
         }else {
             setLogin();
         }
-
 //		Thread thread = new Thread() {
 //			@Override
 //			public void run() {
@@ -143,13 +140,11 @@ public class UserLoginActivity extends Activity {
         //检查软件版本是否需要更新
 //		mUpdateManager = new UpdateVersionManager(this);
 //		this.getVersion();
-
         btnUserLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 userName = edtUserName.getText().toString().trim();
                 userPwd = edtUserPwd.getText().toString().trim();
-
                 if (ConstParm.webAddr == "" || ConstParm.conAddr == ""
                         || ConstParm.videoAddr == "") {
                     new AlertDialog.Builder(UserLoginActivity.this)
@@ -158,20 +153,17 @@ public class UserLoginActivity extends Activity {
                     return;
                 }
                 if (CheckWebServerAddr(ConstParm.webAddr) == false) {
-                    Toast.makeText(UserLoginActivity.this, "web服务器IP无效！",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLoginActivity.this, "web服务器IP无效！", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 //检查网络通不通
                 if (!getNetWorkState()) {//wifi,3G。
-                    Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启", Toast.LENGTH_LONG).show();
                 }
 
                 if (isLogining) {
-                    Toast.makeText(UserLoginActivity.this, "登陆中,请稍后再试",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLoginActivity.this, "登陆中,请稍后再试", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Thread thread = new Thread() {
@@ -225,7 +217,6 @@ public class UserLoginActivity extends Activity {
                         } else {
                             ms.what = 2;
                         }
-
                         handler.sendMessage(ms);
                         isLogining = false;
                     }
@@ -254,41 +245,34 @@ public class UserLoginActivity extends Activity {
         btnServerConfig.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserLoginActivity.this,
-                        ServerConfigActivity.class);
+                Intent intent = new Intent(UserLoginActivity.this, ServerConfigActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
-
-        // Log.i(this.getClass().getName(), "onCreate");
     }
 
     private void setLogin() {
                 userName = edtUserName.getText().toString().trim();
                 userPwd = edtUserPwd.getText().toString().trim();
 
-                if (ConstParm.webAddr == "" || ConstParm.conAddr == ""
-                        || ConstParm.videoAddr == "") {
+                if (ConstParm.webAddr == "" || ConstParm.conAddr == "" || ConstParm.videoAddr == "") {
                     new AlertDialog.Builder(UserLoginActivity.this)
                             .setTitle("提示").setMessage("服务器地址不能为空")
                             .setPositiveButton("确定", null).show();
                     return;
                 }
                 if (CheckWebServerAddr(ConstParm.webAddr) == false) {
-                    Toast.makeText(UserLoginActivity.this, "web服务器IP无效！",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLoginActivity.this, "web服务器IP无效！", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 //检查网络通不通
                 if (!getNetWorkState()) {//wifi,3G。
-                    Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启", Toast.LENGTH_LONG).show();
                 }
 
                 if (isLogining) {
-                    Toast.makeText(UserLoginActivity.this, "登陆中,请稍后再试",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(UserLoginActivity.this, "登陆中,请稍后再试", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Thread thread = new Thread() {
@@ -302,8 +286,7 @@ public class UserLoginActivity extends Activity {
                         String str = "/sdhyschedule/PhoneQueryAction";
                         URL = "http://" + ConstParm.webAddr + ":" + ConstParm.webPort + str;
 
-                        String retMess = getPhoneUser(userName, userPwd, URL
-                                + "!getVideoLoginUser.shtml", isFirstRun);
+                        String retMess = getPhoneUser(userName, userPwd, URL + "!getVideoLoginUser.shtml", isFirstRun);
 
                         if (retMess.equals("0")) {
                             loginMsg = "0";
@@ -485,40 +468,6 @@ public class UserLoginActivity extends Activity {
         return ret;
     }
 
-//    /**
-//     * @param 去掉后台请求ip验证
-//     * @return
-//     */
-//    /*public void loadCityList()
-//    {
-//
-//        String url = "http://" + "123.232.38.10:9999/androidData";
-//
-//        ArrayList<String> list2 = getCityList(url);
-//        if (list2.size() > 0)
-//        {
-//        	SharedPreferences shareObj = getSharedPreferences("config",MODE_PRIVATE);
-//        	SharedPreferences.Editor editor = shareObj.edit();
-//
-//        	editor.putInt("city_size",list2.size()); sKey is an array
-//
-//    	    for(int i=0;i<list2.size();i++)
-//    	    {
-//    	    	//editor.remove("city_" + i);
-//    	    	editor.putString("city_" + i, list2.get(i));
-//    	    	editor.commit();
-//    	    }
-//
-//			//editor.putString("cityServerPort", list.toArray());
-//			//editor.putString("cityServerIp", list);
-////            var object = NSUserDefaults.standardUserDefaults()
-////            object.setObject(list, forKey: "cityServerPort")
-//        }
-//
-//        Log.e("UserLoginActivity","list2.size =" + list2.size());
-//        list2.clear();
-//
-//    }*/
     public ArrayList<String> getCityList(String url) {
 
         ArrayList<String> list = new ArrayList<String>();
@@ -691,15 +640,12 @@ public class UserLoginActivity extends Activity {
             reader.close();
 
             JSONObject json = new JSONObject(sb.toString());
-//			System.out.println("json="+json.toString());
-//			Log.e(TAG, "json.length = " + json.toString());
             // /处理返回值
             if (json != null) {
                 result = json.getString("message");//.getJSONObject("message").toString();
                 if (result.equals("1")) {
                     JSONArray jsonArg = json.getJSONArray("busList");
                     JSONArray jsonIp = json.getJSONArray("busIp");
-//					System.out.println("jsonIp~~~~~~~~"+jsonIp);
                     if (jsonArg.length() > 0) {
                         //Log.e(TAG, "jsonAry.length = " + jsonArg.length());
                         for (int i = 0; i < jsonArg.length(); i++) {
@@ -739,8 +685,7 @@ public class UserLoginActivity extends Activity {
 
     // 登陆成功 跳转到主页面
     public void goToMain() {
-        Intent intent = new Intent(UserLoginActivity.this,
-                BusSelectActivity.class);
+        Intent intent = new Intent(UserLoginActivity.this, BusSelectActivity.class);
 //			Bundle bl = new Bundle();
         //	bl.putStringArrayList("chlSel", aa);
 //				bl.putInt("busList", busList);
@@ -770,7 +715,6 @@ public class UserLoginActivity extends Activity {
                         UserLoginActivity.pd = null;
                     }
                     goToMain();
-
                     break;
                 case 1:
                     if (UserLoginActivity.pd != null) {

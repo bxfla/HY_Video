@@ -162,7 +162,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 
         radioFourChl = (RadioButton) findViewById(R.id.cbFourChannel);
         radioEightChl = (RadioButton) findViewById(R.id.cbEightChannel);
-        ;
+
         radioSelectChl = (RadioButton) findViewById(R.id.cbSelectChannel);
 
         actvLineCode = (InstantAutoComplete) findViewById(R.id.actvLineCode);
@@ -207,7 +207,6 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                         actvLineCode.showDropDown();
                     }
                 }
-
                 return false;
             }
         });
@@ -259,7 +258,6 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-
                     initBusAdapter();
                 }
             }
@@ -647,7 +645,6 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         actvLineCode.setAdapter(adapterLine);
     }
 
-
     private void initBusAdapter() {
 
         String lineCode = actvLineCode.getText().toString();
@@ -682,11 +679,9 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         if (srcMap == null) {
             return;
         }
-
         if (dstList == null) {
             dstList = new ArrayList<String>();
         }
-
         Set<String> keySet = srcMap.keySet();
         Iterator<String> i = keySet.iterator();
 
@@ -695,10 +690,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             if (str != null) {
                 dstList.add(str);
             }
-
-
         }
-
     }
 
     private void getBusListFromMap(Map<String, Long> srcMap, List<String> dstList) {

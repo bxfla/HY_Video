@@ -50,8 +50,26 @@ public class ClientSocketManager extends SocketManager {
         //Log.e("ClietnSocket", loginMsg.toString());
     }
 
+    private static String byte2hex(byte[] buffer) {
+        String h = "";
+
+        for (int i = 0; i < buffer.length; i++) {
+            String temp = Integer.toHexString(buffer[i] & 0xFF);
+            if (temp.length() == 1) {
+                temp = "0" + temp;
+            }
+            h = h + " " + temp;
+        }
+
+        return h;
+
+    }
+
     @Override
     protected void parseMsg() {
+        String ss = byte2hex(workBuf);
+        Log.e("---:",ss);
+        byte stateCode = workBuf[6];
         if ((workBuf[0] & 0xFF) == 0x80 && (workBuf[6] & 0xFF) == 0x77) {
             //char c0 = (char)workBuf[28];//Í¨µÀºÅ¡£
             char c1 = (char) workBuf[29];
@@ -62,13 +80,11 @@ public class ClientSocketManager extends SocketManager {
                 frameDelay = 1000 / rate;
             }
             Log.e("ClientSocketManager", String.valueOf(rate));
-
             frameBus = ((workBuf[13] & 0xFF) << 24) | ((workBuf[14] & 0xFF) << 16) | ((workBuf[15] & 0xFF) << 8) | (workBuf[16] & 0xFF);
 //			Log.e("ClientSocketManager","bus = " + String.valueOf(frameBus));
         }
         System.out.println("workBuf=" + workBuf.toString());
         if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x83 && (workBuf[6] & 0xFF) != 0x89) {
-
             return;
         }
 
@@ -76,27 +92,25 @@ public class ClientSocketManager extends SocketManager {
         long lineNum = ((workBuf[8] & 0xFF) << 24) | ((workBuf[8] & 0xFF) << 16) | ((workBuf[10] & 0xFF) << 8) | (workBuf[11] & 0xFF);
         //³µºÅ
         long busNum = ((workBuf[13] & 0xFF) << 24) | ((workBuf[14] & 0xFF) << 16) | ((workBuf[15] & 0xFF) << 8) | (workBuf[16] & 0xFF);
-
+        long c2 = workBuf[17];
         String lineCode = String.valueOf(lineNum);
         String busCode = String.valueOf(busNum);
-
+        if (busCode.equals("9906")||busCode.equals("9908")||busCode.equals("9910")){
+            long c3 = workBuf[18];
+            Log.e("XXXXX",c3+"");
+            Log.e("XXXXX",busCode+"");
+        }
 
         if (lineMap.containsKey(lineCode)) {
             Map<String, Long> busMap = lineMap.get(lineCode);
             busMap.put(busCode, Long.valueOf(System.currentTimeMillis()));
-
         } else {
             Map<String, Long> busMap = new LinkedHashMap<String, Long>();
             synchronized (lock) {
                 busMap.put(busCode, Long.valueOf(System.currentTimeMillis()));
-
                 lineMap.put(lineCode, busMap);
             }
-
         }
-
-
-        //Log.i("ClientSocketManager", lineCode+"------"+busCode);
     }
 
     private void initLogin() {

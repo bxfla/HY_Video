@@ -687,9 +687,7 @@ public class VideoSocketManager extends SocketManager {
             }
             h = h + " " + temp;
         }
-
         return h;
-
     }
 
 }
