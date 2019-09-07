@@ -1,9 +1,9 @@
 package com.sdhy.video.client;
 
-import android.content.Context;  
-import android.graphics.Rect;  
-import android.util.AttributeSet;  
-import android.widget.AutoCompleteTextView; 
+import android.content.Context;
+import android.graphics.Rect;
+import android.util.AttributeSet;
+import android.widget.AutoCompleteTextView;
 
 public class InstantAutoComplete extends AutoCompleteTextView
 {  
@@ -62,5 +62,7 @@ public class InstantAutoComplete extends AutoCompleteTextView
     @Override
 	public int getThreshold() {  
         return myThreshold;  
-    }  
-}  
+    }
+
+
+}

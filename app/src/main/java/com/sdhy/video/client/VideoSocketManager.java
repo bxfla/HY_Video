@@ -22,6 +22,7 @@ public class VideoSocketManager extends SocketManager {
     protected long Ip3 = 0;
     protected long Ip4 = 0;
     protected long port_ = 0;
+    protected String busType = "";
     protected long total;
     protected long size = 0;
     //通道
@@ -41,14 +42,14 @@ public class VideoSocketManager extends SocketManager {
 
     private VideoSocketManager() {
         super();
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
-        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
-        if (tag.equals("yes")) {
-            actionMsg = new byte[54];
-        } else {
-            actionMsg = new byte[51];
-        }
-        initAction();
+//        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
+//        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
+//        if (tag.equals("yes")) {
+//            actionMsg = new byte[54];
+//        } else {
+//            actionMsg = new byte[51];
+//        }
+//        initAction();
         for (int i = 0; i < chlNum; i++) {
             videoList[i] = new PacketList();
         }
@@ -76,11 +77,9 @@ public class VideoSocketManager extends SocketManager {
 
     @Override
     protected void parseMsg() {
-        String s = byte2hex(workBuf);
-        Log.e("ZZZ", s);
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
-        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
-        if (tag.equals("yes")) {
+//        String s = byte2hex(workBuf);
+//        Log.e("ZZZ", s);
+        if (busType.equals("new")) {
             if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x95) {
                 return;
             }
@@ -194,15 +193,12 @@ public class VideoSocketManager extends SocketManager {
                 return;
             }
             //	Log.e("VideoSocketManger","parseMsg + 88888888888888888");
-            //????????
             byte videoChannel = workBuf[31];
 
             if (videoChannel < 0 || videoChannel > 7) {
                 return;
             }
 
-
-            //????
             long busCode = ((workBuf[13] & 0xFF) << 24) | ((workBuf[14] & 0xFF) << 16) | ((workBuf[15] & 0xFF) << 8) | (workBuf[16] & 0xFF);
             if (busCode != busNum) {
                 return;
@@ -249,14 +245,26 @@ public class VideoSocketManager extends SocketManager {
 
 
     public boolean openChannel(long lineCode, long busCode, byte channel, String beginTime,
-                               String endTime, int[] chlSel, String Ip, String port) {
+                               String endTime, int[] chlSel, String Ip, String port, String busType1) {
         boolean f = false;
-        port_ = Long.parseLong(port);
-        String[] addr = Ip.split("\\.");
-        Ip1 = Long.parseLong(addr[0]);
-        Ip2 = Long.parseLong(addr[1]);
-        Ip3 = Long.parseLong(addr[2]);
-        Ip4 = Long.parseLong(addr[3]);
+        busType = busType1;
+        if (busType1.equals("new")) {
+            actionMsg = new byte[54];
+        } else {
+            actionMsg = new byte[51];
+        }
+        initAction();
+        if (!port.equals("null")){
+            port_ = Long.parseLong(port);
+        }
+        if (!Ip.equals("null")){
+            String[] addr = Ip.split("\\.");
+            Ip1 = Long.parseLong(addr[0]);
+            Ip2 = Long.parseLong(addr[1]);
+            Ip3 = Long.parseLong(addr[2]);
+            Ip4 = Long.parseLong(addr[3]);
+        }
+
         int n = 0;
 
         int chl = -1;
@@ -276,29 +284,27 @@ public class VideoSocketManager extends SocketManager {
         controlChannel(lineCode, busCode, channel, true, beginTime, endTime);
         checkCode(actionMsg);
 //        initTotal();
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
-        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
         if (!beginTime.equals("")) {
-            if (tag.equals("yes")) {
+            if (busType1.equals("new")) {
                 sendMsg(actionMsg);
-                String s = byte2hex(actionMsg);
-                Log.e("XXX",s);
+//                String s = byte2hex(actionMsg);
+//                Log.e("XXX",s);
                 byte[] actionMsg1 = sendOldMsg(actionMsg);
                 checkCode(actionMsg1);
-                String s1 = byte2hex(actionMsg1);
-                Log.e("YYY",s1);
+//                String s1 = byte2hex(actionMsg1);
+//                Log.e("YYY",s1);
                 sendMsg(actionMsg1);
             } else {
                 sendMsg(actionMsg);
                 controlAudio(lineCode, busCode, (byte) chl, true, beginTime, endTime);
                 total = checkCode(actionMsg);
                 initTotal();
-                String s = byte2hex(actionMsg);
-                Log.e("ZZZ",s);
+//                String s = byte2hex(actionMsg);
+//                Log.e("ZZZ",s);
                 sendMsg(actionMsg);
             }
         } else {
-            if (tag.equals("yes")) {
+            if (busType1.equals("new")) {
                 sendMsg(actionMsg);
             } else {
                 sendMsg(actionMsg);
@@ -438,15 +444,12 @@ public class VideoSocketManager extends SocketManager {
     }
 
     private void initAction() {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
-        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
-
         //包头
         actionMsg[0] = (byte) 0xA0;
 
         //包长度
         actionMsg[1] = 0;
-        if (tag.equals("yes")) {
+        if (busType.equals("new")) {
             actionMsg[2] = 54;
         } else {
             actionMsg[2] = 51;
@@ -470,7 +473,7 @@ public class VideoSocketManager extends SocketManager {
         actionMsg[21] = (byte) (now & 0xFF);
         actionMsg[22] = 6;
 
-        if (tag.equals("yes")) {
+        if (busType.equals("new")) {
             actionMsg[53] = (byte) 0xA1;
         } else {
             actionMsg[50] = (byte) 0xA1;
@@ -520,9 +523,7 @@ public class VideoSocketManager extends SocketManager {
     }
 
     private void controlChannel(long lineCode, long busCode, byte channel, boolean openFlag, String beginTime, String endTime) {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
-        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
-        if (tag.equals("yes")) {
+        if (busType.equals("new")) {
             byte[] tempBuf = new byte[22];
 
             //操作类型
@@ -661,9 +662,7 @@ public class VideoSocketManager extends SocketManager {
     }
 
     private void initTotal() {
-        spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(), "login");
-        String tag = spHelper.getData(MyApplication.getContextObject(), "check", "");
-        if (tag.equals("yes")) {
+        if (busType.equals("new")) {
             actionMsg[49] = (byte) ((total & 0xFF000000) >>> 24);
             actionMsg[50] = (byte) ((total & 0xFF0000) >>> 16);
             actionMsg[51] = (byte) ((total & 0xFF00) >>> 8);

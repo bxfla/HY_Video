@@ -108,11 +108,11 @@ public class PlayView extends SurfaceView implements Runnable, Callback {
 
     private long time = 0;
     public Timer mTimer = null;// 定时器
-
+    private String busType = "";
     private long busNum = 0;
     private PacketObject lastObj[] = new PacketObject[8];
 
-    public PlayView(Context context, int[] array, int num, long busCode) {
+    public PlayView(Context context, int[] array, int num, long busCode,String busType1) {
         super(context);
         setFocusable(true);
 
@@ -132,6 +132,7 @@ public class PlayView extends SurfaceView implements Runnable, Callback {
         chlNum = num;
         chlSel = array;
         busNum = busCode;
+        busType = busType1;
         initView();
 
         pixelList = new PixelList[chlNum];
@@ -213,7 +214,6 @@ public class PlayView extends SurfaceView implements Runnable, Callback {
 
     public void startVideo() {
         stopFlag = false;
-
         screenWidth = this.getWidth();
         screenHeight = this.getHeight();
         dstRect1 = getDstRect(screenWidth, screenHeight);

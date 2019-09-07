@@ -124,10 +124,11 @@ public class UserLoginActivity extends Activity {
             Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启", Toast.LENGTH_LONG).show();
         }
 
-        if (userCode.equals("")&&password.equals("")){
-        }else {
-            setLogin();
-        }
+//        if (userCode.equals("")&&password.equals("")){
+//        }else {
+//            setLogin();
+//        }
+
 //		Thread thread = new Thread() {
 //			@Override
 //			public void run() {

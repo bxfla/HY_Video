@@ -139,7 +139,6 @@ public abstract class SocketManager {
             try {
 
                 int len = sockHelper.recv(recvBuf);
-                System.out.println("len~~~~~~~" + len);
                 if (len <= 0) {
                     //stop();
                     continue;

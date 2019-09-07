@@ -2,9 +2,7 @@ package com.sdhy.video.client;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.BusAdapter;
 import com.component.DatePickActivity;
 
 import java.text.DateFormat;
@@ -53,6 +52,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 
     public static long lineCode = 17;
     public static long busCode = 1701;
+    public static String typeBus = "";
     public static String Ip = null;
     public ArrayList<String> busList = new ArrayList<String>();
     public ArrayList<String> busIp = new ArrayList<String>();
@@ -116,7 +116,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         setContentView(R.layout.select);
         cbType = (CheckBox) findViewById(R.id.cbType);
         btnServer = (Button) findViewById(R.id.btnServer);
-        String type = spHelper1.getData(BusSelectActivity.this, "check", "");
+        final String type = spHelper1.getData(BusSelectActivity.this, "check", "");
         if (type.equals("yes")){
             cbType.setChecked(true);
         }else if (type.equals("no")){
@@ -231,6 +231,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                actvBusCode.setText("");
                 initLineAdapter();
             }
         });
@@ -360,7 +361,8 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     }
 
                     try {
-                        busCode = Long.parseLong(bus);
+                        busCode = Long.parseLong(bus.split("---")[0]);
+                        typeBus = bus.split("---")[1];
                     } catch (Exception ex) {
                         new AlertDialog.Builder(BusSelectActivity.this)
                                 .setTitle("提示").setMessage("车号错误")
@@ -398,11 +400,11 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     for (int i = 0; i < busList.size(); i++) {
                         String str = busList.get(i).toString();
                         String ip = busIp.get(i).toString();
-                        if (str.equals(bus)) {
-                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
+//                        if (str.equals(bus)) {
+//                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
                             flg = 1;
                             Ip = ip;
-                        }
+//                        }
                     }
 
                     if (flg == 0) {
@@ -421,13 +423,11 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                             if (!videoSockMgr.start(ConstParm.videoAddr,
                                     ConstParm.videoPort)) {
                                 showMsg("连接视频服务器失败");
-                                System.out.println("连接失败~~~~~~~");
                                 return;
                             }
                             //发送视屏回放
                             boolean iden = videoSockMgr.openChannel(lineCode, busCode, (byte) channelID,
-                                    "", "", chlSel, ip, port);// 15四通道视频传输，即1111
-                            System.out.println("iden=" + iden);
+                                    "", "", chlSel, ip, port,typeBus);// 15四通道视频传输，即1111
                         }
                     }.start();
                     try {
@@ -448,6 +448,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                         bl.putIntArray("chlSel", chlSel);
                         bl.putLong("lineCode", lineCode);
                         bl.putLong("busCode", busCode);
+                        bl.putString("busType", typeBus);
                         bl.putInt("channelID", channelID);
                         bl.putString ("beginTime", "");
                         bl.putString ("endTime", "");
@@ -455,7 +456,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                         bl.putStringArrayList("busIp", busIp);
                         intent.putExtras(bl);
                         startActivity(intent);
-                        finish();
+//                        finish();
                     } catch (Exception e) {
                         // TODO: handle exception
                     }
@@ -481,7 +482,8 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                         return;
                     }
                     try {
-                        busCode = Long.parseLong(bus);
+                        busCode = Long.parseLong(bus.split("---")[0]);
+                        typeBus = bus.split("---")[1];
                     } catch (Exception ex) {
                         new AlertDialog.Builder(BusSelectActivity.this)
                                 .setTitle("提示").setMessage("车号错误")
@@ -516,11 +518,11 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     for (int i = 0; i < busList.size(); i++) {
                         String str = busList.get(i).toString();
                         String ip = busIp.get(i).toString();
-                        if (str.equals(bus)) {
-                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
+//                        if (str.equals(bus)) {
+//                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
                             flg = 1;
                             Ip = ip;
-                        }
+//                        }
                     }
                     if (flg == 0) {
                         new AlertDialog.Builder(BusSelectActivity.this)
@@ -537,7 +539,6 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                             if (!videoSockMgr.start(ConstParm.videoAddr,
                                     ConstParm.videoPort)) {
                                 showMsg("连接视频服务器失败");
-                                System.out.println("连接失败~~~~~~~");
                                 return;
                             }
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -556,7 +557,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                                     Log.e(null, "===========" + res.substring(0, res.length() - 3));
 
                                     boolean iden = videoSockMgr.openChannel(lineCode, busCode, (byte) channelID,
-                                            datefirst, datelast, chlSel, ip, port);// 15四通道视频传输，即1111
+                                            datefirst, datelast, chlSel, ip, port,typeBus);// 15四通道视频传输，即1111
                                     System.out.println("iden=" + iden);
                                 } else {
                                     Message message = new Message();
@@ -588,6 +589,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                             bl.putIntArray("chlSel", chlSel);
                             bl.putLong("lineCode", lineCode);
                             bl.putLong("busCode", busCode);
+                            bl.putString("busType", typeBus);
                             bl.putInt("channelID", channelID);
                             bl.putString ("beginTime", datefirst);
                             bl.putString ("endTime", datelast);
@@ -595,7 +597,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                             bl.putStringArrayList("busIp", busIp);
                             intent.putExtras(bl);
                             startActivityForResult(intent, 0);
-                            finish();
+//                            finish();
                         } catch (Exception e) {
                             // TODO: handle exception
                         }
@@ -639,7 +641,6 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     return o1.compareTo(o2);
                 }
             });
-
         }
         adapterLine = new ArrayAdapter<String>(BusSelectActivity.this, R.layout.down, R.id.contentTextView, listLine);
         actvLineCode.setAdapter(adapterLine);
@@ -657,8 +658,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         if (clientSockMgr.getLineMap().isEmpty() || clientSockMgr.getLineMap().containsKey(lineCode) == false) {
             return;
         }
-
-        Map<String, Long> busMap = clientSockMgr.getLineMap().get(lineCode);
+        Map<String, String> busMap = clientSockMgr.getLineMap().get(lineCode);
         List<String> listBus = new ArrayList<String>();
 
         getBusListFromMap(busMap, listBus);
@@ -671,11 +671,15 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                 }
             });
         }
+        for (int i = 0;i<listBus.size();i++){
+            Log.e("CCCCC",listBus.get(i));
+        }
+        BusAdapter adapter = new BusAdapter(BusSelectActivity.this,0, listBus);
         adapterBus = new ArrayAdapter<String>(BusSelectActivity.this, R.layout.down, R.id.contentTextView, listBus);
         actvBusCode.setAdapter(adapterBus);
     }
 
-    private void getLineListFromMap(Map<String, Map<String, Long>> srcMap, List<String> dstList) {
+    private void getLineListFromMap(Map<String, Map<String, String>> srcMap, List<String> dstList) {
         if (srcMap == null) {
             return;
         }
@@ -685,6 +689,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         Set<String> keySet = srcMap.keySet();
         Iterator<String> i = keySet.iterator();
 
+
         while (i.hasNext()) {
             String str = i.next();
             if (str != null) {
@@ -693,7 +698,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void getBusListFromMap(Map<String, Long> srcMap, List<String> dstList) {
+    private void getBusListFromMap(Map<String, String> srcMap, List<String> dstList) {
         if (srcMap == null) {
             return;
         }
@@ -702,14 +707,37 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             dstList = new ArrayList<String>();
         }
 
-        Set<Entry<String, Long>> entrySet = srcMap.entrySet();
-        Iterator<Entry<String, Long>> i = entrySet.iterator();
+        Set<Entry<String, String>> entrySet = srcMap.entrySet();
+        Iterator<Entry<String, String>> i = entrySet.iterator();
 
+//        Set<Entry<String, String>> entrySet1 = typeMap.entrySet();
+//        Iterator<Entry<String, String>> k = entrySet1.iterator();
+
+//        for (int k = 0;k<entrySet.size();k++){
+//            Entry<String, String> entry = i.next();
+//            dstList.set(k,entry.getKey()+"---"+entry.getValue());
+//        }
         while (i.hasNext()) {
-            Entry<String, Long> entry = i.next();
-            if (System.currentTimeMillis() - entry.getValue().longValue() < 120 * 1000) {
-                dstList.add(entry.getKey());
-            }
+            Entry<String, String> entry = i.next();
+//            Entry<String, String> entry1 = k.next();
+//            if (System.currentTimeMillis() - entry.getValue().longValue() < 120 * 1000) {
+            //<img src=\"" +  IMG_PATH+ tokens[i] + "\"/>
+            dstList.add(entry.getKey()+"---"+entry.getValue());
+//            dstList.add(entry.getKey()+"");
+//            if (dstList.size() == 0){
+//                dstList.add(entry.getKey()+"---"+entry.getValue());
+//            }else {
+//                for(int k = 0;k<dstList.size();k++){
+////                    if (!dstList.get(k).split("---")[0].equals(busCode)){
+////                        dstList.add(entry.getKey()+"---"+entry.getValue());
+////                    }
+//                    if (!dstList.contains(busCode+"---"+"new")||!dstList.contains(busCode+"---"+"old")) {
+//                        Log.e("buscode:",busCode+"---"+"new");
+//                        dstList.add(entry.getKey()+"---"+entry.getValue());
+//                    }
+//                }
+//            }
+////            }
         }
     }
 
@@ -861,14 +889,14 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             isExit = true;
             mHandler.sendEmptyMessageDelayed(0, 2000);
         } else {
-            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> mList = mActivityManager.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : mList) {
-                if (runningAppProcessInfo.pid != android.os.Process.myPid()) {
-                    android.os.Process.killProcess(runningAppProcessInfo.pid);
-                }
-            }
-            android.os.Process.killProcess(android.os.Process.myPid());
+//            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//            List<ActivityManager.RunningAppProcessInfo> mList = mActivityManager.getRunningAppProcesses();
+//            for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : mList) {
+//                if (runningAppProcessInfo.pid != android.os.Process.myPid()) {
+//                    android.os.Process.killProcess(runningAppProcessInfo.pid);
+//                }
+//            }
+//            android.os.Process.killProcess(android.os.Process.myPid());
             finish();
             System.exit(0);
         }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sdhy.video.client"
-    android:versionCode="19"
+    android:versionCode="20"
     android:versionName="2.3" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="26" />
 
     <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />

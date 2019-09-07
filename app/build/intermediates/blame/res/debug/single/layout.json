@@ -16,6 +16,10 @@
         "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\layout\\progress.xml"
     },
     {
+        "merged": "F:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\adapter_bus.xml",
+        "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\layout\\adapter_bus.xml"
+    },
+    {
         "merged": "F:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\login.xml",
         "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\layout\\login.xml"
     },

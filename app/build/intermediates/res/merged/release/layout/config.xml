@@ -259,6 +259,7 @@
 	             android:layout_weight="0.66" />
 
 	         <CheckBox
+				 android:visibility="invisible"
 	             android:id="@+id/config_checkBox1"
 				 android:checked="true"
 	             android:layout_width="wrap_content"

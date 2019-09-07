@@ -346,19 +346,15 @@
 package com.sdhy.video.client;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -374,6 +370,7 @@ public class MainViewActivity extends Activity {
     private long busCode = 0;
     private int channelID = 0;
     private int homeKey = 0;
+    private String busType = "";
     private String beginTime;
     private String endTime;
     private Timer time;
@@ -406,6 +403,7 @@ public class MainViewActivity extends Activity {
         channelID = bundle.getInt("channelID");
         chlSel = bundle.getIntArray("chlSel");
         chlNum = bundle.getInt("chlNum");
+        busType = bundle.getString("busType");
         beginTime = bundle.getString("beginTime");
         endTime = bundle.getString("endTime");
         busList = bundle.getStringArrayList("busList");
@@ -427,7 +425,7 @@ public class MainViewActivity extends Activity {
             return;
         }
         playSound = new PlayPCM();
-        videoWin = new PlayView(this, chlSel, chlNum, busCode);
+        videoWin = new PlayView(this, chlSel, chlNum, busCode,busType);
 
         setContentView(videoWin);
         System.out.println("MainViewActivity~~~~111111111111");
@@ -462,22 +460,22 @@ public class MainViewActivity extends Activity {
             //此处写退向后台的处理
             videoSockMgr.stop();
 
-            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> mList = mActivityManager.getRunningAppProcesses();
-            for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : mList) {
-                if (runningAppProcessInfo.pid != android.os.Process.myPid()) {
-                    android.os.Process.killProcess(runningAppProcessInfo.pid);
-                }
-            }
-            android.os.Process.killProcess(android.os.Process.myPid());
-
-            Intent intent = new Intent(this,BusSelectActivity.class);
-            Bundle bl = new Bundle();
-            //	bl.putStringArrayList("chlSel", aa);
-            bl.putStringArrayList("busList", busList);
-            bl.putStringArrayList("busIp", busIp);
-            intent.putExtras(bl);
-            startActivity(intent);
+//            ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//            List<ActivityManager.RunningAppProcessInfo> mList = mActivityManager.getRunningAppProcesses();
+//            for (ActivityManager.RunningAppProcessInfo runningAppProcessInfo : mList) {
+//                if (runningAppProcessInfo.pid != android.os.Process.myPid()) {
+//                    android.os.Process.killProcess(runningAppProcessInfo.pid);
+//                }
+//            }
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//
+//            Intent intent = new Intent(this,BusSelectActivity.class);
+//            Bundle bl = new Bundle();
+//            //	bl.putStringArrayList("chlSel", aa);
+//            bl.putStringArrayList("busList", busList);
+//            bl.putStringArrayList("busIp", busIp);
+//            intent.putExtras(bl);
+//            startActivity(intent);
             finish();
             return true;
         }

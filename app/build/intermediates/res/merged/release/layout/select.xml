@@ -5,11 +5,10 @@
     android:background="#ffffff"
     android:baselineAligned="false"
     android:orientation="vertical">
-
     <RelativeLayout
         android:id="@+id/homepage_title"
         android:layout_width="fill_parent"
-        android:layout_height="70dp"
+        android:layout_height="90dp"
         android:background="#63B8FF">
 
         <ImageView
@@ -46,10 +45,10 @@
 
 
     </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/llMain"
             android:layout_width="fill_parent"
@@ -394,6 +393,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:visibility="invisible"
                     android:id="@+id/cbType"
                     android:layout_width="0dp"
                     android:layout_height="45dp"
@@ -426,4 +426,5 @@
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

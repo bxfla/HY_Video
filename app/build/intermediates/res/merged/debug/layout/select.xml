@@ -393,6 +393,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:visibility="invisible"
                     android:id="@+id/cbType"
                     android:layout_width="0dp"
                     android:layout_height="45dp"

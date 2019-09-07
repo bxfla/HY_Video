@@ -1,7 +1,5 @@
 package com.sdhy.video.client;
 
-import android.util.Log;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,7 +8,7 @@ public class ClientSocketManager extends SocketManager {
 
     private byte[] loginMsg = new byte[28];
 
-    private Map<String, Map<String, Long>> lineMap = new LinkedHashMap<String, Map<String, Long>>();
+    private Map<String, Map<String, String>> lineMap = new LinkedHashMap<String, Map<String, String>>();
 
     private Object lock;
 
@@ -18,11 +16,11 @@ public class ClientSocketManager extends SocketManager {
 
     private long frameBus = 0;
 
-    public Map<String, Map<String, Long>> getLineMap() {
+    public Map<String, Map<String, String>> getLineMap() {
         return lineMap;
     }
 
-    public void setLineMap(Map<String, Map<String, Long>> lineMap) {
+    public void setLineMap(Map<String, Map<String, String>> lineMap) {
         this.lineMap = lineMap;
     }
 
@@ -67,11 +65,9 @@ public class ClientSocketManager extends SocketManager {
 
     @Override
     protected void parseMsg() {
-        String ss = byte2hex(workBuf);
-        Log.e("---:",ss);
-        byte stateCode = workBuf[6];
+//        String ss = byte2hex(workBuf);
+//        Log.e("---:",ss);
         if ((workBuf[0] & 0xFF) == 0x80 && (workBuf[6] & 0xFF) == 0x77) {
-            //char c0 = (char)workBuf[28];//Í¨µÀºÅ¡£
             char c1 = (char) workBuf[29];
             char c2 = (char) workBuf[30];
             String s = String.format("%c%c", c1, c2);
@@ -79,11 +75,8 @@ public class ClientSocketManager extends SocketManager {
             if (rate != 0) {
                 frameDelay = 1000 / rate;
             }
-            Log.e("ClientSocketManager", String.valueOf(rate));
             frameBus = ((workBuf[13] & 0xFF) << 24) | ((workBuf[14] & 0xFF) << 16) | ((workBuf[15] & 0xFF) << 8) | (workBuf[16] & 0xFF);
-//			Log.e("ClientSocketManager","bus = " + String.valueOf(frameBus));
         }
-        System.out.println("workBuf=" + workBuf.toString());
         if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x83 && (workBuf[6] & 0xFF) != 0x89) {
             return;
         }
@@ -92,23 +85,33 @@ public class ClientSocketManager extends SocketManager {
         long lineNum = ((workBuf[8] & 0xFF) << 24) | ((workBuf[8] & 0xFF) << 16) | ((workBuf[10] & 0xFF) << 8) | (workBuf[11] & 0xFF);
         //³µºÅ
         long busNum = ((workBuf[13] & 0xFF) << 24) | ((workBuf[14] & 0xFF) << 16) | ((workBuf[15] & 0xFF) << 8) | (workBuf[16] & 0xFF);
-        long c2 = workBuf[17];
+        long c3 = workBuf[18];
         String lineCode = String.valueOf(lineNum);
         String busCode = String.valueOf(busNum);
-        if (busCode.equals("9906")||busCode.equals("9908")||busCode.equals("9910")){
-            long c3 = workBuf[18];
-            Log.e("XXXXX",c3+"");
-            Log.e("XXXXX",busCode+"");
-        }
-
-        if (lineMap.containsKey(lineCode)) {
-            Map<String, Long> busMap = lineMap.get(lineCode);
-            busMap.put(busCode, Long.valueOf(System.currentTimeMillis()));
-        } else {
-            Map<String, Long> busMap = new LinkedHashMap<String, Long>();
-            synchronized (lock) {
-                busMap.put(busCode, Long.valueOf(System.currentTimeMillis()));
-                lineMap.put(lineCode, busMap);
+        c3 = (c3 < 0) ? -c3 : c3;
+        if ((workBuf[6] & 0xFF) == 0x83){
+            if (c3>80){
+                if(lineMap.containsKey(lineCode)) {
+                    Map<String,String> busMap = lineMap.get(lineCode);
+                    busMap.put(busCode, "new");
+                } else {
+                    Map<String,String> busMap = new LinkedHashMap<String,String>();
+                    synchronized(lock) {
+                        busMap.put(busCode, "new");
+                        lineMap.put(lineCode, busMap);
+                    }
+                }
+            }else if (c3<80){
+                if(lineMap.containsKey(lineCode)) {
+                    Map<String,String> busMap = lineMap.get(lineCode);
+                    busMap.put(busCode, "old");
+                } else {
+                    Map<String,String> busMap = new LinkedHashMap<String,String>();
+                    synchronized(lock) {
+                        busMap.put(busCode, "old");
+                        lineMap.put(lineCode, busMap);
+                    }
+                }
             }
         }
     }
