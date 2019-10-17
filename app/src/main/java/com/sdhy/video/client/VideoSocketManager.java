@@ -78,7 +78,7 @@ public class VideoSocketManager extends SocketManager {
     @Override
     protected void parseMsg() {
 //        String s = byte2hex(workBuf);
-//        Log.e("ZZZ", s);
+//        Log.e("---:", s);
         if (busType.equals("new")) {
             if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x95) {
                 return;
@@ -178,21 +178,14 @@ public class VideoSocketManager extends SocketManager {
             if ((workBuf[0] & 0xFF) != 0x80 && (workBuf[6] & 0xFF) != 0x95) {
                 return;
             }
-            //	Log.e("VideoSocketManger","parseMsg + 666666666666666");
-            //????????
             byte stateCode = workBuf[28];
             if (stateCode != 2 && stateCode != 3 && stateCode != 4) {
                 return;
             }
-            //    Log.e("VideoSocketManger","parseMsg + 777777777777777");
-            //???????????
-            //?????0x01 ??????ε????0x02
-            //?????0x03 ??????ε????0x04
             byte dataType = workBuf[32];
             if (dataType != 1 && dataType != 2 && dataType != 3 && dataType != 4) {
                 return;
             }
-            //	Log.e("VideoSocketManger","parseMsg + 88888888888888888");
             byte videoChannel = workBuf[31];
 
             if (videoChannel < 0 || videoChannel > 7) {
@@ -401,9 +394,7 @@ public class VideoSocketManager extends SocketManager {
         if (!beginTime.equals("") && !endTime.equals("")) {
             long begin = 0;
             long end = 0;
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-
             try {
                 //历史回放
                 begin = sdf.parse(beginTime).getTime() / 1000 + 3600 * 8;
@@ -415,21 +406,17 @@ public class VideoSocketManager extends SocketManager {
                 end = 0;
                 tempBuf[4] = 1;
             }
-
             //回放数据的开始时间
             tempBuf[5] = (byte) ((begin & 0xFF000000) >>> 24);
             tempBuf[6] = (byte) ((begin & 0xFF0000) >>> 16);
             tempBuf[7] = (byte) ((begin & 0xFF00) >>> 8);
             tempBuf[8] = (byte) (begin & 0xFF);
-
             //回放数据的结束时间
             tempBuf[9] = (byte) ((end & 0xFF000000) >>> 24);
             tempBuf[10] = (byte) ((end & 0xFF0000) >>> 16);
             tempBuf[11] = (byte) ((end & 0xFF00) >>> 8);
             tempBuf[12] = (byte) (end & 0xFF);
         }
-        ;
-
         //视频服务器的IP地址和端口
         //由视频服务器进行调整
         //所以这里全部填0即可
@@ -446,7 +433,6 @@ public class VideoSocketManager extends SocketManager {
     private void initAction() {
         //包头
         actionMsg[0] = (byte) 0xA0;
-
         //包长度
         actionMsg[1] = 0;
         if (busType.equals("new")) {

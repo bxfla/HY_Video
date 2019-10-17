@@ -455,7 +455,7 @@ public class PlayView extends SurfaceView implements Runnable, Callback {
                             continue;
                         }
 //                        Log.e("sockMgr.videoList", sockMgr.videoList[i].count() + "");
-                        if (sockMgr.videoList[i].count() >0) {
+                        if (sockMgr.videoList[i].count() >20) {
                             decode(i, sockMgr.videoList[i].get());
                         }
                     } catch (Exception ex) {

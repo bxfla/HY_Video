@@ -177,6 +177,7 @@ public class UserLoginActivity extends Activity {
                         isLogining = true;
                         String str = "/sdhyschedule/PhoneQueryAction";
                         URL = "http://" + ConstParm.webAddr + ":" + ConstParm.webPort + str;
+//                        URL = "http://" + "192.168.2.116" + ":" + "8088" + str;
 
                         String retMess = getPhoneUser(userName, userPwd, URL
                                 + "!getVideoLoginUser.shtml", isFirstRun);

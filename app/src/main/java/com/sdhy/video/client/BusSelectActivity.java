@@ -399,7 +399,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     Log.e("BusSelectActivity", "busList2.length = " + busList.size());
                     for (int i = 0; i < busList.size(); i++) {
                         String str = busList.get(i).toString();
-                        String ip = busIp.get(i).toString();
+                        String ip = busIp.get(0).toString();
 //                        if (str.equals(bus)) {
 //                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
                             flg = 1;
@@ -420,14 +420,12 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                             String[] addr = Ip.split(":");
                             String ip = addr[0];
                             String port = addr[1];
-                            if (!videoSockMgr.start(ConstParm.videoAddr,
-                                    ConstParm.videoPort)) {
+                            if (!videoSockMgr.start(ConstParm.videoAddr, ConstParm.videoPort)) {
                                 showMsg("连接视频服务器失败");
                                 return;
                             }
                             //发送视屏回放
-                            boolean iden = videoSockMgr.openChannel(lineCode, busCode, (byte) channelID,
-                                    "", "", chlSel, ip, port,typeBus);// 15四通道视频传输，即1111
+                            boolean iden = videoSockMgr.openChannel(lineCode, busCode, (byte) channelID, "", "", chlSel, ip, port,typeBus);// 15四通道视频传输，即1111
                         }
                     }.start();
                     try {

@@ -61,7 +61,6 @@ public abstract class SocketManager {
                 sendLive();
             }
         }, 20000, 20000);
-
         return true;
     }
 
