@@ -88,7 +88,7 @@ public class DatePickActivity extends Activity implements OnClickListener {
      * 调整numberpicker大小
      */
     private void resizeNumberPicker(NumberPicker np) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(Util.dip2px(this, 45),
+        LayoutParams params = new LayoutParams(Util.dip2px(this, 45),
                 LayoutParams.WRAP_CONTENT);
         params.setMargins(Util.dip2px(this, 5), 0, Util.dip2px(this, 5), 0);
         np.setLayoutParams(params);

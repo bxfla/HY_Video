@@ -16,21 +16,21 @@ public class Util {
 	public static File cameraFile;
 
 	/**
-	 * »ñÈ¡ÆÁÄ»¸ß¶ÈºÍ¿í´ø
+	 * ï¿½ï¿½È¡ï¿½ï¿½Ä»ï¿½ß¶ÈºÍ¿ï¿½ï¿½
 	 * 
 	 * @param mContext
-	 * @return int[¸ß£¬¿í]
+	 * @return int[ï¿½ß£ï¿½ï¿½ï¿½]
 	 */
 	public static int[] getScreen(Context mContext) {
 		DisplayMetrics dm = new DisplayMetrics();
-		// È¡µÃ´°¿ÚÊôÐÔ
+		// È¡ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		// getWindowManager().getDefaultDisplay().getMetrics(dm);
 		((Activity) mContext).getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-		// ´°¿ÚµÄ¿í¶È
+		// ï¿½ï¿½ï¿½ÚµÄ¿ï¿½ï¿½
 		int screenWidth = dm.widthPixels;
 
-		// ´°¿Ú¸ß¶È
+		// ï¿½ï¿½ï¿½Ú¸ß¶ï¿½
 		int screenHeight = dm.heightPixels;
 		int screen[] = { screenHeight, screenWidth };
 		return screen;
@@ -48,8 +48,8 @@ public class Util {
 	/**
 	 * 
 	 * @Title: dip2px @Description: TODO(dp×ªpx) @param @param
-	 *         context @param @param dpValue @param @return Éè¶¨ÎÄ¼þ @return int
-	 *         ·µ»ØÀàÐÍ @throws
+	 *         context @param @param dpValue @param @return ï¿½è¶¨ï¿½Ä¼ï¿½ @return int
+	 *         ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ @throws
 	 */
 	public static int dip2px(Context context, float dpValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
@@ -62,9 +62,9 @@ public class Util {
 
 
 
-	// ·µ»ØÊÇ·ñÓÐSD¿¨
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½SDï¿½ï¿½
 	public static boolean GetSDState() {
-		if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			return true;
 		}
 		return false;
@@ -72,17 +72,17 @@ public class Util {
 
 	/**
 	 * 
-	 * @Title: deleteFile @Description: TODO(É¾³ýÎÄ¼þ) @param @param file
-	 *         Éè¶¨ÎÄ¼þ @return void ·µ»ØÀàÐÍ @throws
+	 * @Title: deleteFile @Description: TODO(É¾ï¿½ï¿½ï¿½Ä¼ï¿½) @param @param file
+	 *         ï¿½è¶¨ï¿½Ä¼ï¿½ @return void ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ @throws
 	 */
 	public static void deleteFile(File file) {
-		if (file.exists()) { // ÅÐ¶ÏÎÄ¼þÊÇ·ñ´æÔÚ
-			if (file.isFile()) { // ÅÐ¶ÏÊÇ·ñÊÇÎÄ¼þ
-				file.delete(); // delete()·½·¨ ÄãÓ¦¸ÃÖªµÀ ÊÇÉ¾³ýµÄÒâË¼;
-			} else if (file.isDirectory()) { // ·ñÔòÈç¹ûËüÊÇÒ»¸öÄ¿Â¼
-				File files[] = file.listFiles(); // ÉùÃ÷Ä¿Â¼ÏÂËùÓÐµÄÎÄ¼þ files[];
-				for (int i = 0; i < files.length; i++) { // ±éÀúÄ¿Â¼ÏÂËùÓÐµÄÎÄ¼þ
-					deleteFile(files[i]); // °ÑÃ¿¸öÎÄ¼þ ÓÃÕâ¸ö·½·¨½øÐÐµü´ú
+		if (file.exists()) { // ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+			if (file.isFile()) { // ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
+				file.delete(); // delete()ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ó¦ï¿½ï¿½Öªï¿½ï¿½ ï¿½ï¿½É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¼;
+			} else if (file.isDirectory()) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ä¿Â¼
+				File files[] = file.listFiles(); // ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ä¼ï¿½ files[];
+				for (int i = 0; i < files.length; i++) { // ï¿½ï¿½ï¿½ï¿½Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½Ä¼ï¿½
+					deleteFile(files[i]); // ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½Ä¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½
 				}
 			}
 			file.delete();
@@ -92,12 +92,12 @@ public class Util {
 	}
 
 	/**
-	 * ÏÔÊ¾toast
+	 * ï¿½ï¿½Ê¾toast
 	 * 
 	 * @param context
-	 *            µ±Ç°activity
+	 *            ï¿½ï¿½Ç°activity
 	 * @param content
-	 *            ÏÔÊ¾µÄÄÚÈÝ
+	 *            ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 
 	public static void showToast(Context mContext, String content) {
@@ -105,7 +105,7 @@ public class Util {
 	}
 
 	/**
-	 * actionbar¸ß¶È
+	 * actionbarï¿½ß¶ï¿½
 	 * 
 	 * @param context
 	 * @return
@@ -114,7 +114,7 @@ public class Util {
 		Class<?> c = null;
 		Object obj = null;
 		Field field = null;
-		int x = 0, sbar = 38;// Ä¬ÈÏÎª38£¬Ã²ËÆ´ó²¿·ÖÊÇÕâÑùµÄ
+		int x = 0, sbar = 38;// Ä¬ï¿½ï¿½Îª38ï¿½ï¿½Ã²ï¿½Æ´ó²¿·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		try {
 			c = Class.forName("com.android.internal.R$dimen");
@@ -131,7 +131,7 @@ public class Util {
 
 
 	/**
-	 * »ñÈ¡Ê±¼ä´Á
+	 * ï¿½ï¿½È¡Ê±ï¿½ï¿½ï¿½
 	 * @return
 	 */
 	public static long getSeq() {
@@ -139,7 +139,7 @@ public class Util {
 	}
 
 	/**
-	 * ¼ì²éÍøÂç×´Ì¬
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	 */
 	public static boolean isNetUseable(Context context) {
 		boolean have=false;
@@ -151,7 +151,7 @@ public class Util {
 		else
 		{
 		
-			showToast(context, "ÎÞÍøÂçÁ¬½Ó");
+			showToast(context, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		}
 		return have;
 	}

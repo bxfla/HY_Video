@@ -1,6 +1,6 @@
 package com.sdhy.video.client;
 /**
- * Èí¼þ°æ±¾×Ô¶¯¸üÐÂ
+ * ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
  * 
  * */
 import java.io.File;
@@ -30,17 +30,17 @@ import android.widget.ProgressBar;
 //import com.sdhy.video.client.R;
      public class CopyOfUpdateVersionManager {
 		private Context mContext;
-		//ÌáÊ¾Óï
-		private String updateMsg = "×îÐÂµÄÈí¼þ°ü£¬¿ìÏÂÔØ°É~";
-		//·µ»ØµÄ°²×°°üurl
+		//ï¿½ï¿½Ê¾ï¿½ï¿½
+		private String updateMsg = "ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø°ï¿½~";
+		//ï¿½ï¿½ï¿½ØµÄ°ï¿½×°ï¿½ï¿½url
 		private String apkUrl = "/HyAndroidApp.apk";
 		private Dialog noticeDialog;
 		private Dialog downloadDialog;
-		 /* ÏÂÔØ°ü°²×°Â·¾¶ */
+		 /* ï¿½ï¿½ï¿½Ø°ï¿½ï¿½ï¿½×°Â·ï¿½ï¿½ */
 	    private static  String savePath = "/sdcard/updatedemo/";
 	    private static  String saveFileName = "";
 
-	    /* ½ø¶ÈÌõÓëÍ¨ÖªuiË¢ÐÂµÄhandlerºÍmsg³£Á¿ */
+	    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ÖªuiË¢ï¿½Âµï¿½handlerï¿½ï¿½msgï¿½ï¿½ï¿½ï¿½ */
 	    private ProgressBar mProgress;
 	    private static final int DOWN_UPDATE = 1;
 	    private static final int DOWN_OVER = 2;
@@ -68,12 +68,12 @@ import android.widget.ProgressBar;
 			this.mContext = context;
 		}
 		
-		//Íâ²¿½Ó¿ÚÈÃÖ÷Activityµ÷ÓÃ
+		//ï¿½â²¿ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Activityï¿½ï¿½ï¿½ï¿½
 		public void checkUpdateInfo(String url,int ver ){
 			int oldVer=getVersionCode();
 			apkUrl =url+apkUrl;
 			 if(ver>oldVer){
-				//ÓÐÐÂ°æ±¾ÐèÒª¸üÐÂ
+				//ï¿½ï¿½ï¿½Â°æ±¾ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
 				showNoticeDialog();
 			}
 			
@@ -81,17 +81,17 @@ import android.widget.ProgressBar;
 		
 		
 		private void showNoticeDialog(){
-			AlertDialog.Builder builder = new Builder(mContext);
-			builder.setTitle("Èí¼þ°æ±¾¸üÐÂ");
+			Builder builder = new Builder(mContext);
+			builder.setTitle("ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½ï¿½ï¿½ï¿½");
 			builder.setMessage(updateMsg);
-			builder.setPositiveButton("ÏÂÔØ", new OnClickListener() {			
+			builder.setPositiveButton("ï¿½ï¿½ï¿½ï¿½", new OnClickListener() {			
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
 					showDownloadDialog();			
 				}
 			});
-			builder.setNegativeButton("ÒÔºóÔÙËµ", new OnClickListener() {			
+			builder.setNegativeButton("ï¿½Ôºï¿½ï¿½ï¿½Ëµ", new OnClickListener() {			
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();				
@@ -102,15 +102,15 @@ import android.widget.ProgressBar;
 		}
 		
 		private void showDownloadDialog(){
-		 	AlertDialog.Builder builder = new Builder(mContext);
-			builder.setTitle("Èí¼þ°æ±¾¸üÐÂ");
+		 	Builder builder = new Builder(mContext);
+			builder.setTitle("ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½ï¿½ï¿½ï¿½");
 			
 			final LayoutInflater inflater = LayoutInflater.from(mContext);
 			View v = inflater.inflate(R.layout.progress, null);
 			mProgress = (ProgressBar)v.findViewById(R.id.progress);
 			
 			builder.setView(v);
-			builder.setNegativeButton("È¡Ïû", new OnClickListener() {	
+			builder.setNegativeButton("È¡ï¿½ï¿½", new OnClickListener() {	
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -122,15 +122,15 @@ import android.widget.ProgressBar;
 			
 			downloadApk();
 		}
-		//APKÏÂÔØÏß³Ì
+		//APKï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½
 		private Runnable mdownApkRunnable = new Runnable() {	
 			@Override
 			public void run() {
 				try {
-					 // ÅÐ¶ÏSD¿¨ÊÇ·ñ´æÔÚ£¬²¢ÇÒÊÇ·ñ¾ßÓÐ¶ÁÐ´È¨ÏÞ  
+					 // ï¿½Ð¶ï¿½SDï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ð¶ï¿½Ð´È¨ï¿½ï¿½  
 	                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))  
 	                { 
-	                	 // »ñµÃ´æ´¢¿¨µÄÂ·¾¶  
+	                	 // ï¿½ï¿½Ã´æ´¢ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½  
 	                    String sdpath = Environment.getExternalStorageDirectory() + "/";  
 	                    savePath = sdpath + "download";  
 	                    URL url = new URL(apkUrl);
@@ -144,7 +144,7 @@ import android.widget.ProgressBar;
 						if(!file.exists()){
 							file.mkdir();
 						}
-						saveFileName=savePath + "/ÊÓÆµ¿Í»§¶Ë.apk";
+						saveFileName=savePath + "/ï¿½ï¿½Æµï¿½Í»ï¿½ï¿½ï¿½.apk";
 						String apkFile = saveFileName;
 						File ApkFile = new File(apkFile);
 						FileOutputStream fos = new FileOutputStream(ApkFile);
@@ -155,15 +155,15 @@ import android.widget.ProgressBar;
 				    		int numread = is.read(buf);
 				    		count += numread;
 				    	    progress =(int)(((float)count / length) * 100);
-				    	    //¸üÐÂ½ø¶È
+				    	    //ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½
 				    	    mHandler.sendEmptyMessage(DOWN_UPDATE);
 				    		if(numread <= 0){	
-				    			//ÏÂÔØÍê³ÉÍ¨Öª°²×°
+				    			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨Öªï¿½ï¿½×°
 				    			mHandler.sendEmptyMessage(DOWN_OVER);
 				    			break;
 				    		}
 				    		fos.write(buf,0,numread);
-				    	}while(!interceptFlag);//µã»÷È¡Ïû¾ÍÍ£Ö¹ÏÂÔØ.
+				    	}while(!interceptFlag);//ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½ï¿½ï¿½.
 						fos.close();
 						is.close();
 	                }
@@ -176,7 +176,7 @@ import android.widget.ProgressBar;
 			}
 		};
 		/** 
-		 * »ñÈ¡Èí¼þ°æ±¾ºÅ 
+		 * ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½ï¿½ 
 		 *  
 		 * @param context 
 		 * @return 
@@ -186,7 +186,7 @@ import android.widget.ProgressBar;
 		    int versionCode = 0;  
 		    try  
 		    {  
-		        // »ñÈ¡Èí¼þ°æ±¾ºÅ£¬¶ÔÓ¦AndroidManifest.xmlÏÂandroid:versionCode  
+		        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½æ±¾ï¿½Å£ï¿½ï¿½ï¿½Ó¦AndroidManifest.xmlï¿½ï¿½android:versionCode  
 		        versionCode = mContext.getPackageManager().getPackageInfo("com.sdhy.video.client", 0).versionCode;  
 		    } catch (NameNotFoundException e)  
 		    {  
@@ -195,7 +195,7 @@ import android.widget.ProgressBar;
 		    return versionCode;  
 		}	
 		 /**
-	     * ÏÂÔØapk
+	     * ï¿½ï¿½ï¿½ï¿½apk
 	     * @param url
 	     */
 		
@@ -204,7 +204,7 @@ import android.widget.ProgressBar;
 			downLoadThread.start();
 		}
 		 /**
-	     * °²×°apk
+	     * ï¿½ï¿½×°apk
 	     * @param url
 	     */
 		private void installApk(){

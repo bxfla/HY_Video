@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sdhy.video.client"
-    android:versionCode="20"
+    android:versionCode="14"
     android:versionName="2.3"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -26,8 +26,8 @@
         android:theme="@style/AppTheme" >       
         
         <activity
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"                             
+            android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
             android:name=".UserLoginActivity"
             android:label="@string/app_name"  
             android:theme="@style/AppTheme" >
@@ -38,8 +38,8 @@
         </activity>        
         
         <activity
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize"                             
+            android:windowSoftInputMode="adjustPan|stateAlwaysVisible"
             android:name=".ServerConfigActivity"
             android:label="@string/server_config" 
             android:theme="@style/AppTheme" >

@@ -280,7 +280,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             }
         });
 
-        radioSelectChl.setOnClickListener(new View.OnClickListener() {
+        radioSelectChl.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -290,7 +290,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             }
         });
 
-        radioFourChl.setOnClickListener(new View.OnClickListener() {
+        radioFourChl.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -301,7 +301,7 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             }
         });
 
-        radioEightChl.setOnClickListener(new View.OnClickListener() {
+        radioEightChl.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
