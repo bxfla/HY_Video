@@ -136,7 +136,6 @@ public abstract class SocketManager {
     protected void recvMsg() {
         while (started) {
             try {
-
                 int len = sockHelper.recv(recvBuf);
                 if (len <= 0) {
                     //stop();

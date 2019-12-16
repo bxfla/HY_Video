@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
@@ -90,6 +91,7 @@ public class UserLoginActivity extends Activity {
     public static ProgressDialog pd = null;
     private Timer time = new Timer();
     private CheckBox mPswCheck;
+    private TextView tv1,tv2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,9 +102,24 @@ public class UserLoginActivity extends Activity {
         edtUserName = (EditText) findViewById(R.id.edtUserName);
         edtUserPwd = (EditText) findViewById(R.id.edtUserPwd);
         mPswCheck = (CheckBox) findViewById(R.id.psw_ckb);
-        //edtUserName.setText("100001");
-        //edtUserPwd.setText("8616");
-        //登陆按键
+        tv1 = (TextView) findViewById(R.id.tv1);
+        tv2 = (TextView) findViewById(R.id.tv2);
+        tv1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserLoginActivity.this,TreatyActivity.class);
+                intent.putExtra("tag","1");
+                startActivity(intent);
+            }
+        });
+        tv2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserLoginActivity.this,TreatyActivity.class);
+                intent.putExtra("tag","2");
+                startActivity(intent);
+            }
+        });
         btnUserLogin = (Button) findViewById(R.id.btnUserLogin);
         //配置按键
         btnServerConfig = (Button) findViewById(R.id.btnServerConfig);
@@ -123,24 +140,6 @@ public class UserLoginActivity extends Activity {
         if (!getNetWorkState()) {//wifi,3G。
             Toast.makeText(UserLoginActivity.this, "都不通 网络不通，请检查3G或WIFI是否开启", Toast.LENGTH_LONG).show();
         }
-
-//        if (userCode.equals("")&&password.equals("")){
-//        }else {
-//            setLogin();
-//        }
-
-//		Thread thread = new Thread() {
-//			@Override
-//			public void run() {
-//				loadCityList();
-//			}
-//
-//		};
-//		thread.start();
-//		setURL();
-        //检查软件版本是否需要更新
-//		mUpdateManager = new UpdateVersionManager(this);
-//		this.getVersion();
         btnUserLogin.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,19 +224,6 @@ public class UserLoginActivity extends Activity {
 
                 };
                 thread.start();
-//					else {
-//						String s = "";
-//						s = "其他错误，错误代码" + loginMsg + "!";
-//						Toast.makeText(UserLoginActivity.this, s,
-//								Toast.LENGTH_LONG).show();
-//
-//					}
-
-//				} catch (Exception ex) {
-//					new AlertDialog.Builder(UserLoginActivity.this)
-//							.setTitle("提示").setMessage("URL链接失败！")
-//							.setPositiveButton("确定", null).show();
-//				}
             }
 
 

@@ -1,14 +1,14 @@
 package com.sdhy.video.client;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Environment;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class PlayPCM implements Runnable {
     static {
@@ -141,16 +141,22 @@ public class PlayPCM implements Runnable {
 
                     byteIndex = 0;
                     while (byteIndex < packObj.packSize) {
-
+//                        byteIndex = byteIndex + headCount;//老视频加  新视频不加
                         SharedPreferencesHelper spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login");
-                        String tag = spHelper.getData(MyApplication.getContextObject(),"check","");
-                        if (!tag.equals("yes")){
+                        String tag = spHelper.getData(MyApplication.getContextObject(),"tag","");
+                        if (tag.equals("old")){
                             byteIndex = byteIndex + headCount;
                             if (dataBuf[byteIndex] != 0 || dataBuf[byteIndex + 1] != 1) {
                                 break;
                             }
+                        } else if (tag.equals("new")){
+                            if(dataBuf[byteIndex] != 0 || dataBuf[byteIndex+1] !=1) {
+							/*msg = "packSize is not audio data�� 0=" + dataBuf[byteIndex] ;
+							msg = msg +"; 1=" + dataBuf[byteIndex+1] ;
+							Log.e("PlayPCM",msg);*/
+                                break;
+                            }
                         }
-
                         short aLen = 0;
                         aLen = dataBuf[byteIndex + 3];
                         aLen <<= 8;

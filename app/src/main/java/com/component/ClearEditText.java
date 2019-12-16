@@ -80,7 +80,6 @@ public class ClearEditText extends EditText implements OnFocusChangeListener,
 				}
 			}
 		}
-
 		return super.onTouchEvent(event);
 	}
 

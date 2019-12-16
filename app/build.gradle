@@ -9,8 +9,8 @@ android {
     }
     defaultConfig {
         applicationId "com.sdhy.video.client"
-        minSdkVersion 11
-        targetSdkVersion 22
+        minSdkVersion 17
+        targetSdkVersion 26
     }
 
     buildTypes {

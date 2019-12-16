@@ -34,11 +34,12 @@ public class SharedPreferencesHelper {
      * @param key
      * @param data
      */
-    public static void saveData(Context context, String key, Object data){
+    public static SharedPreferencesHelper saveData(Context context, String key, Object data){
 
         String type = data.getClass().getSimpleName();
         editor.putString(key, String.valueOf(data));
         editor.commit();
+        return null;
     }
 
     /**

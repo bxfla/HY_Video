@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Mon Oct 21 16:27:38 CST 2019
+#Mon Dec 16 11:54:51 CST 2019
 25.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\resources.arsc
 25.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 22.set=ANDROID_RESOURCE
@@ -9,7 +9,7 @@
 14.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\main.xml
 14.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 16.set=ANDROID_RESOURCE
-count=29
+count=30
 6.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xxhdpi-v4\\fabujz_male.png
 6.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 26.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\login.xml
@@ -45,7 +45,7 @@ count=29
 25.set=ANDROID_RESOURCE
 17.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 10.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\progress.xml
-28.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\radio_nv.xml
+28.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\activity_treaty.xml
 10.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 28.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 14.set=ANDROID_RESOURCE
@@ -61,12 +61,15 @@ count=29
 9.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\transforms\\stripDebugSymbol\\debug\\folders\\2000\\1f\\main
 18.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 11.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\transforms\\stripDebugSymbol\\debug\\folders\\2000\\1f\\main\\lib\\armeabi\\libh264.so
+29.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\radio_nv.xml
 11.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\transforms\\stripDebugSymbol\\debug\\folders\\2000\\1f\\main
+29.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 24.set=ANDROID_RESOURCE
 3.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\activity_date_pick.xml
 3.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 13.set=ANDROID_RESOURCE
 23.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\anim\\push_bottom_out.xml
+29.set=ANDROID_RESOURCE
 23.base=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_
 18.set=ANDROID_RESOURCE
 19.file=F\:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable\\delete_selector.xml
