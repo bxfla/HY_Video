@@ -75,8 +75,8 @@ public class VideoSocketManager extends SocketManager {
 
     @Override
     protected void parseMsg() {
-//        String s = byte2hex(workBuf);
-//        Log.e("---:", s);
+        String s = byte2hex(workBuf);
+        Log.e("---:", s);
         if (busType.equals("new")) {
             spHelper = new SharedPreferencesHelper(MyApplication.getContextObject(),"login")
                     .saveData(MyApplication.getContextObject(),"tag","new");
@@ -304,6 +304,8 @@ public class VideoSocketManager extends SocketManager {
         } else {
             if (busType1.equals("new")) {
                 sendMsg(actionMsg);
+                String s = byte2hex(actionMsg);
+                Log.e("XXX111",s);
             } else {
 //                initTotal();
 //                f = sendMsg(actionMsg);
@@ -332,7 +334,7 @@ public class VideoSocketManager extends SocketManager {
 
 
     protected byte[] sendOldMsg(byte[] msg) {
-        msg[28] = 0x11;
+        actionMsg[28] = 0x11;
         actionMsg[5] = (byte) (seqNum);
         //回放数据的结束时间
         msg[36] = 0;
@@ -476,10 +478,9 @@ public class VideoSocketManager extends SocketManager {
 
     private void fillAction(long lineCode, long busCode) {
         //包序号
-//        actionMsg[4] = 0;
-//        actionMsg[5] = (byte) (seqNum);
-        actionMsg[4] = (byte) ((seqNum & 0xFF00) >>> 8);
-        actionMsg[5] = (byte) (seqNum & 0xFF);
+        actionMsg[4] = 0;
+        actionMsg[5] = (byte) (seqNum);
+
 
         seqNum++;
 

@@ -111,8 +111,8 @@ public class BusSelectActivity extends Activity implements OnClickListener {
         lock = new Object();
         busList = bundle.getStringArrayList("busList");
         busIp = bundle.getStringArrayList("busIp");
-//	    System.out.println("busList="+busList);
-//	    System.out.println("busIp="+busIp);
+	    System.out.println("busList="+busList);
+	    System.out.println("busIp="+busIp);
         setContentView(R.layout.select);
         cbType = (CheckBox) findViewById(R.id.cbType);
         btnServer = (Button) findViewById(R.id.btnServer);
@@ -198,15 +198,20 @@ public class BusSelectActivity extends Activity implements OnClickListener {
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 // TODO Auto-generated method stub
-                if (actvLineCode.getText().length() == 0) {
-                    long t = System.currentTimeMillis();
-                    if (t - time > 1000) {
-                        time = t;
-                        initLineAdapter();
-                        //Thread.sleep(50);
-                        actvLineCode.showDropDown();
-                    }
-                }
+//                new Handler().postDelayed(new Runnable() {
+//                    public void run() {
+                        //你需要跳转的地方的代码
+                        if (actvLineCode.getText().length() == 0) {
+                            long t = System.currentTimeMillis();
+                            if (t - time > 3000) {
+                                time = t;
+                                initLineAdapter();
+                                //Thread.sleep(50);
+                                actvLineCode.showDropDown();
+                            }
+                        }
+//                    }
+//                },1000); //延迟2秒跳转
                 return false;
             }
         });
@@ -343,7 +348,8 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                 if (huifang.equals("1")) {
                     //直播
                     String line = actvLineCode.getText().toString();
-                    String bus = actvBusCode.getText().toString();
+                    String bus1 = actvBusCode.getText().toString();
+                    String bus = actvBusCode.getText().toString().split("---")[0];
                     if (line == "" || bus == "") {
                         new AlertDialog.Builder(BusSelectActivity.this)
                                 .setTitle("提示").setMessage("线路号车号不能为空")
@@ -361,8 +367,8 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     }
 
                     try {
-                        busCode = Long.parseLong(bus.split("---")[0]);
-                        typeBus = bus.split("---")[1];
+                        busCode = Long.parseLong(bus1.split("---")[0]);
+                        typeBus = bus1.split("---")[1];
                     } catch (Exception ex) {
                         new AlertDialog.Builder(BusSelectActivity.this)
                                 .setTitle("提示").setMessage("车号错误")
@@ -399,12 +405,12 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     Log.e("BusSelectActivity", "busList2.length = " + busList.size());
                     for (int i = 0; i < busList.size(); i++) {
                         String str = busList.get(i).toString();
-                        String ip = busIp.get(0).toString();
-//                        if (str.equals(bus)) {
+                        String ip = busIp.get(i).toString();
+                        if (str.equals(bus)) {
 //                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
                             flg = 1;
                             Ip = ip;
-//                        }
+                        }
                     }
 
                     if (flg == 0) {
@@ -516,11 +522,11 @@ public class BusSelectActivity extends Activity implements OnClickListener {
                     for (int i = 0; i < busList.size(); i++) {
                         String str = busList.get(i).toString();
                         String ip = busIp.get(i).toString();
-//                        if (str.equals(bus)) {
+                        if (str.equals(bus)) {
 //                            System.out.println("i=" + i + "和" + busList.get(i) + "和" + busIp.get(i));
                             flg = 1;
                             Ip = ip;
-//                        }
+                        }
                     }
                     if (flg == 0) {
                         new AlertDialog.Builder(BusSelectActivity.this)

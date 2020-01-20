@@ -89,31 +89,35 @@ public class ClientSocketManager extends SocketManager {
         String lineCode = String.valueOf(lineNum);
         String busCode = String.valueOf(busNum);
         c3 = (c3 < 0) ? -c3 : c3;
-        if ((workBuf[6] & 0xFF) == 0x83){
-            if (c3>80){
-                if(lineMap.containsKey(lineCode)) {
-                    Map<String,String> busMap = lineMap.get(lineCode);
+//        if ((workBuf[6] & 0xFF) == 0x83){
+        if (c3 > 80) {
+            if (lineMap.containsKey(lineCode)) {
+                Map<String, String> busMap = lineMap.get(lineCode);
+                busMap.put(busCode, "new");
+//                Log.e("XXXZZZ",busCode);
+            } else {
+                Map<String, String> busMap = new LinkedHashMap<String, String>();
+                synchronized (lock) {
                     busMap.put(busCode, "new");
-                } else {
-                    Map<String,String> busMap = new LinkedHashMap<String,String>();
-                    synchronized(lock) {
-                        busMap.put(busCode, "new");
-                        lineMap.put(lineCode, busMap);
-                    }
+                    lineMap.put(lineCode, busMap);
+//                    Log.e("XXXZZZ",busCode);
                 }
-            }else if (c3<80){
-                if(lineMap.containsKey(lineCode)) {
-                    Map<String,String> busMap = lineMap.get(lineCode);
+            }
+        } else if (c3 < 80) {
+            if (lineMap.containsKey(lineCode)) {
+                Map<String, String> busMap = lineMap.get(lineCode);
+                busMap.put(busCode, "old");
+//                Log.e("XXXZZZ",busCode);
+            } else {
+                Map<String, String> busMap = new LinkedHashMap<String, String>();
+                synchronized (lock) {
                     busMap.put(busCode, "old");
-                } else {
-                    Map<String,String> busMap = new LinkedHashMap<String,String>();
-                    synchronized(lock) {
-                        busMap.put(busCode, "old");
-                        lineMap.put(lineCode, busMap);
-                    }
+                    lineMap.put(lineCode, busMap);
+//                    Log.e("XXXZZZ",busCode);
                 }
             }
         }
+//        }
     }
 
     private void initLogin() {

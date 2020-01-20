@@ -8,6 +8,10 @@
         "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\drawable-hdpi\\backagepp.png"
     },
     {
+        "merged": "F:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\loading.png",
+        "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\drawable-hdpi\\loading.png"
+    },
+    {
         "merged": "F:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\search_clear_pressed.png",
         "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\drawable-hdpi\\search_clear_pressed.png"
     },

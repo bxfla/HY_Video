@@ -17,8 +17,7 @@ import com.sdhy.video.client.R;
 
 
 
-public class ClearEditText extends EditText implements OnFocusChangeListener,
-		TextWatcher {
+public class ClearEditText extends EditText implements OnFocusChangeListener, TextWatcher {
 
 	/**
 	 * 删除按钮的引用
@@ -49,8 +48,7 @@ public class ClearEditText extends EditText implements OnFocusChangeListener,
 		if (mClearDrawable == null) {
 			// throw new
 			// NullPointerException("You can add drawableRight attribute in XML");
-			mClearDrawable = getResources().getDrawable(
-					R.drawable.delete_selector);
+			mClearDrawable = getResources().getDrawable(R.drawable.delete_selector);
 		}
 
 		mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(),
@@ -118,9 +116,7 @@ public class ClearEditText extends EditText implements OnFocusChangeListener,
 	}
 
 	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
-
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 	}
 
 	@Override
@@ -148,5 +144,4 @@ public class ClearEditText extends EditText implements OnFocusChangeListener,
 		translateAnimation.setDuration(1000);
 		return translateAnimation;
 	}
-
 }

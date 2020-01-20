@@ -2336,8 +2336,50 @@
                     "startColumn": 4,
                     "startOffset": 8045,
                     "endLine": 165,
+                    "endColumn": 12,
+                    "endOffset": 8711
+                },
+                "from": {
+                    "file": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 66,
+                        "startColumn": 4,
+                        "startOffset": 2961,
+                        "endLine": 76,
+                        "endColumn": 12,
+                        "endOffset": 3627
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 166,
+                    "startColumn": 4,
+                    "startOffset": 8716,
+                    "endLine": 172,
+                    "endColumn": 12,
+                    "endOffset": 9070
+                },
+                "from": {
+                    "file": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\values\\styles.xml",
+                    "position": {
+                        "startLine": 57,
+                        "startColumn": 4,
+                        "startOffset": 2577,
+                        "endLine": 63,
+                        "endColumn": 12,
+                        "endOffset": 2931
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 173,
+                    "startColumn": 4,
+                    "startOffset": 9075,
+                    "endLine": 183,
                     "endColumn": 16,
-                    "endOffset": 8667
+                    "endOffset": 9697
                 },
                 "from": {
                     "file": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\values\\styles.xml",
@@ -2353,12 +2395,12 @@
             },
             {
                 "to": {
-                    "startLine": 166,
+                    "startLine": 184,
                     "startColumn": 4,
-                    "startOffset": 8672,
-                    "endLine": 169,
+                    "startOffset": 9702,
+                    "endLine": 187,
                     "endColumn": 11,
-                    "endOffset": 8846
+                    "endOffset": 9876
                 },
                 "from": {
                     "file": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\values\\styles.xml",

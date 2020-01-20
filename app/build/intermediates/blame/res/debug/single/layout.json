@@ -32,6 +32,10 @@
         "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\layout\\activity_date_pick.xml"
     },
     {
+        "merged": "F:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\loading.xml",
+        "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\layout\\loading.xml"
+    },
+    {
         "merged": "F:\\anzhong\\HyVideoClient1\\app\\build\\intermediates\\res\\merged\\debug\\layout\\main.xml",
         "source": "F:\\anzhong\\HyVideoClient1\\app\\src\\main\\res\\layout\\main.xml"
     }
